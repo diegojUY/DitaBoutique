@@ -15,8 +15,8 @@ db.sqlite3
 # Static deployment (se genera con collectstatic)
 static_deployment/
 
-# Media uploads
-media/
+# Media uploads (incluir en git para Railway)
+# media/
 
 # IDE
 .vscode/
