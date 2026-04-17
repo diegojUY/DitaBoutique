@@ -30,8 +30,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = ['ditaboutique-production.up.railway.app', '.railway.app', 'localhost', '127.0.0.1']
 
 
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
-CSRF_TRUSTED_ORIGINS = [o for o in CSRF_TRUSTED_ORIGINS if o]
+CSRF_TRUSTED_ORIGINS = [
+    'https://ditaboutique-production.up.railway.app',
+]
 
 
 # Application definition
