@@ -137,7 +137,7 @@ def registro(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'¡Cuenta creada para {username}! Ya puedes iniciar sesión.')
-            return redirect(f"{reverse('login')}?next={urlquote(next_url)}")
+            return redirect(f"{reverse('login')}?next={quote(next_url)}")
     else:
         form = UserCreationForm()
 
