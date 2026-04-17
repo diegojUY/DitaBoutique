@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'ditaboutique.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:lpyKxkdPRMgIUlIKZxEqlwbEIFznnRjj@postgres.railway.internal:5432/railway'
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
     )
 }
 
