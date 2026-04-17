@@ -1,2 +1,2 @@
 [start]
-cmd = "bash /app/start.sh"
+cmd = "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn ditaboutique.wsgi --bind 0.0.0.0:$PORT"
