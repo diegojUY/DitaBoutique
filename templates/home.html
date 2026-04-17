@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ site_name|default:"DitaBoutique" }} — Inicio{% endblock %}
+
+{% endblock %}
+
+{% block contenido %}
+
+  {# 1. Hero Banner #}
+  <div class="home-section">
+    {% include "components/hero_banner.html" with hero=hero %}
+  </div>
+
+  {# 2. Banners de categoría (Plata / Acero) #}
+  {% if cat_banners_top %}
+    {% include "components/category_banners.html"
+       with banners=cat_banners_top cols=2 %}
+  {% endif %}
+
+  {# 3. Grilla de productos destacados #}
+  {% include "components/product_grid.html" with
+      products=featured_products
+      title="Destacadas"
+      link="/catalogo/?grp=1"
+      columns=4
+  %}
+
+  {# 4. Banners categoría media (Carteras / Accesorios / Bijou) #}
+  {% if cat_banners_mid %}
+    {% include "components/category_banners.html"
+       with banners=cat_banners_mid cols=3 %}
+  {% endif %}
+
+  {# 5. Grilla de ofertas #}
+  {% include "components/product_grid.html" with
+      products=sale_products
+      title="Las mejores gangas"
+      link="/catalogo/outlet/"
+      columns=4
+  %}
+
+  {# 6. Banner promocional #}
+  {% if promo %}
+    {% include "components/promo_banner.html" with promo=promo %}
+  {% endif %}
+
+{% endblock %}

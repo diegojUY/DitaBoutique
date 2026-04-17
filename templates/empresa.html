@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Empresa | DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="page-card">
+    <h1>Nuestro Emprendimiento</h1>
+    <p>DitaBoutique es una tienda dedicada a ofrecer accesorios de diseño con calidad artesanal y de la mejor calidad para garantizar el bienestar de nuestros clientes.</p>
+    <p>Trabajamos con proveedores locales y buscamos inspiración en las últimas tendencias para darte lo mejor y que estés a la moda.</p>
+    <p>Puedes seguirnos en nuestras redes sociales para enterarte de todo lo nuevo que tenemos para vos.</p>
+    <div class="page-card__social">
+      <p class="page-card__social-title">Redes Sociales</p>
+      <div class="page-card__social-actions">
+        <a href="https://www.facebook.com/tatiana.alvarez.732974?rdid=2XbnuJsY3I0G2mcO&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1KCGT9QAFv%2F" target="_blank" rel="noopener noreferrer" class="page-card__button page-card__button--social">Facebook</a>
+        <a href="https://www.instagram.com/ditaboutiique?igsh=MW14Z3NkZGk1YWp3dA%3D%3D" target="_blank" rel="noopener noreferrer" class="page-card__button page-card__button--social">Instagram</a>
+      </div>
+    </div>
+    <div class="page-card-actions">
+      <a href="{% url 'inicio' %}" class="page-card__button">Comprar!</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

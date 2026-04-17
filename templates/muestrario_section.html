@@ -1,0 +1,33 @@
+{% load static %}
+<section class="muestrario-section">
+  <div class="container">
+    <div class="muestrario-header">
+      <h2>Muestrario de joyas</h2>
+      <p>Seis joyas se muestran en rotación para que veas distintas opciones cada pocos segundos.</p>
+    </div>
+
+    <div id="joyeria-grid" class="joyeria-grid"></div>
+  </div>
+</section>
+
+<script id="joyeria-data" type="application/json">
+[
+{% for joya in joyas %}
+  {
+    "id": "{{ joya.id }}",
+    "nombre": "{{ joya.nombre|escapejs }}",
+    "imagen": "{{ joya.imagen.url|escapejs }}",
+    "precio": "{{ joya.precio }}",
+    "descripcion": "{{ joya.descripcion|default:'Joyas exclusivas y cuidadosamente seleccionadas.'|escapejs }}",
+    "cantidad": "1",
+    "tipo": "joya",
+    "gallery_urls": [
+      "{{ joya.imagen.url|escapejs }}"
+      {% for image in joya.imagenes.all %},{% if image.imagen %}"{{ image.imagen.url|escapejs }}"{% endif %}{% endfor %}
+    ],
+    "admin_url": "{% if request.user.is_staff %}{% url 'admin:tienda_joya_change' joya.id %}{% endif %}"
+  }{% if not forloop.last %},{% endif %}
+{% endfor %}
+]
+</script>
+<script src="{% static 'js/muestrario.js' %}"></script>

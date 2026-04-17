@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<section class="cat-banners-section">
+  <div class="container">
+    <div class="cat-banners" data-cols="{{ cols|default:'2' }}">
+      {% for banner in banners %}
+        <a class="cat-banner" href="{{ banner.url }}"
+           aria-label="{{ banner.label }}">
+          {% if banner.image_url %}
+            <img src="{{ banner.image_url }}"
+                 alt="{{ banner.image_alt|default:banner.label }}"
+                 loading="lazy">
+          {% endif %}
+          <div class="cat-banner__label">
+            <div>
+              <span>{{ banner.label }}</span>
+              {% if banner.show_cta %}
+                <br><span class="cat-banner__cta">Ver colección</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% empty %}
+        <p style="color:var(--color-gray)">Sin categorías configuradas.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

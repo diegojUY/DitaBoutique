@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+{% with overlay_pos=hero.overlay|default:"left" %}
+<section class="hero">
+  {% if hero.image_url %}
+    <img class="hero__img" src="{{ hero.image_url }}"
+         alt="{{ hero.image_alt|default:'' }}" loading="eager">
+  {% endif %}
+
+  <div class="hero__overlay hero__overlay--{{ overlay_pos }}">
+    <div class="hero__content">
+      {% if hero.eyebrow %}
+        <p class="hero__eyebrow">{{ hero.eyebrow }}</p>
+      {% endif %}
+      {% if hero.title %}
+        <h1 class="hero__title">{{ hero.title }}</h1>
+      {% endif %}
+      {% if hero.subtitle %}
+        <p class="hero__subtitle">{{ hero.subtitle }}</p>
+      {% endif %}
+      {% if hero.cta_url %}
+        <a href="{{ hero.cta_url }}" class="hero__cta">
+          {{ hero.cta_text|default:"Ver más" }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endwith %}
+{% endblock %}

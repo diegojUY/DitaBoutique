@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Agregar{% endblock %}
+
+{% block js %}<script>alert('Usar con prudencia')</script>{% endblock %}
+
+{% block cabecera %}Agregar Producto{% endblock %}
+
+{% block contenido %}
+
+<form method="POST" action="">{% csrf_token %}
+{% for campo in formulario %}
+    <p>{{campo.label_tag}}</p>
+    <p>{{campo}}</p>
+{% endfor %}
+
+<input type="submit" value="Agregar" onclick="alert('Producto guardado')">
+
+</form>
+
+{% endblock %}

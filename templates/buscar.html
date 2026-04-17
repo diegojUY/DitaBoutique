@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Buscar - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Buscar</h1>
+
+  {% if query %}
+    <p>Resultados para "{{ query }}"</p>
+
+    {% if products %}
+      <div class="search-results">
+        {% for product in products %}
+          <article class="search-result-card" data-product-id="{{ product.id }}" data-product-name="{{ product.nombre|escapejs }}" data-product-price="{{ product.precio }}" data-product-description="{{ product.descripcion|default:'Stock disponible: ' }}" data-product-quantity="{{ product.cantidad }}" data-product-type="producto" data-gallery="{{ product.gallery_urls|join:'|;|' }}">
+            <a href="#" class="search-result-card__link">
+              {% if product.portada %}
+                <img src="{{ product.portada.url }}" alt="{{ product.nombre }}">
+              {% endif %}
+              <h2>{{ product.nombre }}</h2>
+            </a>
+            <p>Precio: ${{ product.precio }}</p>
+            <p>Stock disponible: {{ product.cantidad }}</p>
+            <div class="product-card__actions">
+              {% if request.user.is_authenticated %}
+                <a href="{% url 'agregar_al_carrito' 'producto' product.id %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Agregar al carrito</a>
+              {% else %}
+                <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Ingresar para comprar</a>
+              {% endif %}
+              {% if request.user.is_staff %}
+                <a href="{% url 'admin:tienda_producto_change' product.id %}" class="card-joya__button admin-edit-button" target="_blank" rel="noopener noreferrer">Editar producto</a>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No encontramos resultados para tu búsqueda.</p>
+    {% endif %}
+  {% else %}
+    <p>Usa el buscador para encontrar productos por nombre.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/product-modal.js' %}"></script>
+{% endblock %}

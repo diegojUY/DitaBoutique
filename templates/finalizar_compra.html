@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Finalizar compra - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="login-panel">
+    <div class="login-card cart-card">
+      <div class="login-card__header">
+        <h1>Proceder al pago</h1>
+        <p>Abriste esta página en una nueva pestaña para revisar los métodos de pago sin cerrar el carrito.</p>
+      </div>
+      {% if cart_empty %}
+        <p class="checkout-error">Su carrito está vacío</p>
+      {% else %}
+        <div class="checkout-info">
+          <p>Aceptamos los siguientes métodos de pago:</p>
+          <ul>
+            <li>Transferencia bancaria</li>
+            <li>Depósito</li>
+            <li>Efectivo al coordinar envío</li>
+            <li>Giro por Abitab</li>
+            <li>RedPagos</li>
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

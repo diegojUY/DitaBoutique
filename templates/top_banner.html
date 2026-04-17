@@ -1,0 +1,38 @@
+{% load static %}
+
+
+<div class="top-banner">
+  <div class="container">
+    <div class="top-banner-marquee">
+      <div class="top-banner-marquee__inner">
+        <span class="top-banner-marquee__text">
+          {{ banner_text|default:"Envíos a todo el país" }}
+          {% if banner_link %}
+            &nbsp;|&nbsp;
+            <a href="{{ banner_link }}">
+              {{ banner_cta|default:"Ver ofertas" }}
+            </a>
+          {% endif %}
+        </span>
+        <span class="top-banner-marquee__text">
+          {{ banner_text|default:"Envíos a todo el país" }}
+          {% if banner_link %}
+            &nbsp;|&nbsp;
+            <a href="{{ banner_link }}">
+              {{ banner_cta|default:"Ver ofertas" }}
+            </a>
+          {% endif %}
+        </span>
+        <span class="top-banner-marquee__text">
+          {{ banner_text|default:"Envíos a todo el país" }}
+          {% if banner_link %}
+            &nbsp;|&nbsp;
+            <a href="{{ banner_link }}">
+              {{ banner_cta|default:"Ver ofertas" }}
+            </a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

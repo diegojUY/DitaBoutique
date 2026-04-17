@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Resultados{% endblock %}
+
+{% block cabecera %}Resultados de la busqueda{% endblock %}
+
+{% block contenido %}
+
+
+{% if productos %}
+    {% for producto in productos %}
+    <p>Titulo: {{ producto.titulo }}</p>    
+    <p>Unidades: {{ producto.cantidad }}</p>        
+    <p>Precio: {{ producto.precio }} UYU</p>
+        <img class="res" src="{{ producto.fotos.url }}" alt="{{ producto.titulo }}">
+    {% endfor %}
+{% else %}
+    <p>No se pudo encontrar el producto!</p>    
+{% endif %}
+
+{% endblock %}

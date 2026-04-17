@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block contenido %}   
+
+<section class="product-section">
+  <div class="container">
+    {% if title or link %}
+      <div class="section-header">
+        {% if title %}<h2 class="section-title">{{ title }}</h2>{% endif %}
+        {% if link %}
+          <a href="{{ link }}" class="section-link">
+            {{ link_text|default:"Ver más" }} →
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="product-grid"
+         {% if columns %}data-cols="{{ columns }}"{% endif %}>
+      {% for product in products %}
+        <div>{% include "components/product_card.html" with product=product %}</div>
+      {% empty %}
+        <div class="product-grid__empty">
+          {{ empty_message|default:"No hay productos en esta categoría." }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

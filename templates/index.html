@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inicio | DitaBoutique{% endblock %}
+
+
+{% block content %}
+<section class="home-gallery">
+  <div class="container">
+    <div class="gallery-header">
+      <div>
+        <p class="eyebrow">Destacados</p>
+        <h1>Nuevos ingresos</h1>
+        <p>Descubre las últimas piezas de joyería y accesorios recién añadidos a la tienda.</p>
+      </div>
+    </div>
+
+    <div id="joyeria-grid" class="joyeria-grid"></div>
+  </div>
+</section>
+
+<script id="joyeria-data" type="application/json">
+[
+{% for product in products %}
+  {
+    "id": "{{ product.id }}",
+    "nombre": "{{ product.nombre|escapejs }}",
+    "imagen": "{% if product.portada %}{{ product.portada.url|escapejs }}{% endif %}",
+    "precio": "{{ product.precio }}",
+    "descripcion": "{{ product.descripcion|default:''|escapejs }}",
+    "cantidad": "{{ product.cantidad }}",
+    "tipo": "producto",
+    "gallery_urls": [
+      {% if product.portada %}"{{ product.portada.url|escapejs }}"{% endif %}
+      {% for image in product.imagenes.all %}
+        {% if image.imagen %}{% if not forloop.first or product.portada %}, {% endif %}"{{ image.imagen.url|escapejs }}"{% endif %}
+      {% endfor %}
+    ],
+    "admin_url": "{% if request.user.is_staff %}{% url 'admin:tienda_producto_change' product.id %}{% endif %}"
+  }{% if not forloop.last or joyas %},{% endif %}
+{% endfor %}
+{% for joya in joyas %}
+  {
+    "id": "{{ joya.id }}",
+    "nombre": "{{ joya.nombre|escapejs }}",
+    "imagen": "{{ joya.imagen.url|escapejs }}",
+    "precio": "{{ joya.precio }}",
+    "descripcion": "{{ joya.descripcion|default:'Joyas exclusivas y cuidadosamente seleccionadas.'|escapejs }}",
+    "cantidad": "1",
+    "tipo": "joya",
+    "gallery_urls": [
+      "{{ joya.imagen.url|escapejs }}"
+      {% for image in joya.imagenes.all %},{% if image.imagen %}"{{ image.imagen.url|escapejs }}"{% endif %}{% endfor %}
+    ],
+    "admin_url": "{% if request.user.is_staff %}{% url 'admin:tienda_joya_change' joya.id %}{% endif %}"
+  }{% if not forloop.last %},{% endif %}
+{% endfor %}
+]
+</script>
+<script src="{% static 'js/muestrario.js' %}"></script>
+{% endblock %}

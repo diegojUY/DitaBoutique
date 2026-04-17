@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load cart_extras %}
+
+{% block title %}Carrito - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="login-panel">
+    <div class="cart-page-main">
+      <div class="login-card cart-card">
+        <div class="login-card__header">
+          <h1>Tu Carrito</h1>
+          <p>Aquí verás los productos que agregaste y podrás gestionar tu orden.</p>
+        </div>
+
+        <div class="cart-table-wrap">
+          <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio por unidad</th>
+              <th>Subtotal</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if cart_items %}
+              {% for key, item in cart_items.items %}
+                <tr>
+                  <td>
+                    {% if item.imagen %}
+                      <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="cart-item__img">
+                    {% else %}
+                      <div class="cart-item__placeholder">Sin imagen</div>
+                    {% endif %}
+                  </td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>${{ item.precio }}</td>
+                  <td>${{ item.precio|multiply:item.cantidad }}</td>
+                  <td><a href="{% url 'eliminar_del_carrito' item.tipo item.product_id %}" class="cart-action">Eliminar</a></td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6">El carrito está vacío.</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cart-summary">
+        <div>
+          <p>Total artículos: <strong>{{ unidades_carrito }}</strong></p>
+          <strong>Total a pagar: ${{ total_carrito }}</strong>
+        </div>
+        {% if cart_items %}
+          <a href="{% url 'finalizar_compra' %}" target="_blank" rel="noopener noreferrer" class="btn-primary">Proceder al pago</a>
+        {% else %}
+          <p class="cart-empty-error">Su carrito está vacío</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+

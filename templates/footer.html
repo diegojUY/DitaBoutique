@@ -1,0 +1,60 @@
+{% load static %}
+
+<footer class="site-footer">
+  <div class="footer-grid">
+
+    <div class="footer-col">
+      <p class="footer-col-title">Empresa</p>
+      <ul>
+        {% for item in footer_links.empresa %}
+          <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Comprar</p>
+      <ul>
+        {% for item in footer_links.comprar %}
+          <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Mi cuenta</p>
+      <ul>
+        {% for item in footer_links.mi_cuenta %}
+          <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="social-links">
+        {% if social_links.facebook %}
+          <a href="{{ social_links.facebook }}" class="social-link social-link--facebook" aria-label="Facebook"></a>
+        {% endif %}
+        {% if social_links.instagram %}
+          <a href="{{ social_links.instagram }}" class="social-link social-link--instagram" aria-label="Instagram"></a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Suscribite</p>
+      <form class="newsletter-form" method="post" action="{% url 'suscribirse' %}">
+        {% csrf_token %}
+        <input type="text"  name="nombre"   placeholder="Nombre">
+        <input type="email" name="email"    placeholder="E-mail" required>
+        <button type="submit">Suscribirme</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© {% now "Y" %} DitaBoutique</span>
+    <span>
+      <a href="/terminos/">Términos</a> ·
+      <a href="/privacidad/">Privacidad</a>
+    </span>
+  </div>
+</footer>

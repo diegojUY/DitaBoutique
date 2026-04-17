@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="login-panel">
+    <div class="login-card">
+      <div class="login-card__header">
+        <h1>Ingresar</h1>
+        <p>Accede a tu cuenta con tu correo y contraseña.</p>
+      </div>
+
+      <form method="post" action="" class="login-form newsletter-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+
+        {% if formulario.non_field_errors %}
+          <div class="form-errors">
+            {{ formulario.non_field_errors }}
+          </div>
+        {% endif %}
+
+        {% for campo in formulario %}
+          <div class="form-field">
+            {{ campo.label_tag }}
+            {{ campo }}
+            {% if campo.errors %}
+              <div class="field-errors">{{ campo.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit">Ingresar</button>
+      </form>
+
+      <div class="login-card__footer">
+        <p>¿Eres nuevo? <a href="{% url 'registro' %}" class="login-form__secondary-button">Crear cuenta</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

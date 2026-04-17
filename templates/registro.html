@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="login-panel">
+    <div class="login-card">
+      <div class="login-card__header">
+        <h1>Registro</h1>
+        <p>Crea tu cuenta para acceder a tu perfil y realizar compras.</p>
+      </div>
+
+      <form method="post" action="" class="login-form newsletter-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+
+        {% if formulario.non_field_errors %}
+          <div class="form-errors">
+            {{ formulario.non_field_errors }}
+          </div>
+        {% endif %}
+
+        {% for campo in formulario %}
+          <div class="form-field">
+            {{ campo.label_tag }}
+            {{ campo }}
+            {% if campo.errors %}
+              <div class="field-errors">{{ campo.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit">Crear cuenta</button>
+      </form>
+
+      <div class="login-card__footer">
+        <p>¿Ya tienes cuenta? <a href="{% url 'login' %}" class="login-form__secondary-button">Ingresar</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

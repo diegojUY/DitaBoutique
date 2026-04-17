@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<section class="promo-banner-section">
+  <div class="container">
+    {% if promo.image_url %}
+      <a class="promo-banner--image" href="{{ promo.cta_url|default:'#' }}">
+        <img src="{{ promo.image_url }}" alt="{{ promo.image_alt|default:'' }}" loading="lazy">
+      </a>
+
+    {% else %}
+      <div class="promo-banner--text"
+          /#style= "background: {{ promo.bg_color|default: '#1a1a1a' }};">
+        <div>
+          {% if promo.eyebrow %}
+            <p class="promo-banner__eyebrow">{{ promo.eyebrow }}</p>
+          {% endif %}
+          {% if promo.title %}
+            <p class="promo-banner__title">{{ promo.title }}</p>
+          {% endif %}
+          {% if promo.subtitle %}
+            <p class="promo-banner__subtitle">{{ promo.subtitle }}</p>
+          {% endif %}
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;flex-shrink:0">
+          {% if promo.logo_url %}
+            <img class="promo-banner__logo"
+                 src="{{ promo.logo_url }}" alt="{{ promo.logo_alt|default:'' }}">
+          {% endif %}
+          {% if promo.cta_url %}
+            <a href="{{ promo.cta_url }}" class="promo-banner__cta">
+              {{ promo.cta_text|default:"Ver oferta" }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}    
+  </div>
+</section>
+{% endblock %}

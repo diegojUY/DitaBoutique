@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<article class="product-card" data-product-id="{{ product.id }}" data-product-name="{{ product.nombre|escapejs }}" data-product-price="{{ product.precio }}" data-product-description="{{ product.descripcion|default:product.get_categoria_display|default:''|escapejs }}" data-product-quantity="{{ product.cantidad }}" data-product-type="producto" data-gallery="{% for image in product.gallery_urls %}{% if not forloop.first %}|;|{% endif %}{{ image|escapejs }}{% endfor %}">
+  <a href="#">
+    <div class="product-card__img-wrap">
+      {% if product.portada %}
+        <img class="product-card__img"
+             src="{{ product.portada.url }}"
+             alt="{{ product.nombre }}" loading="lazy">
+      {% endif %}
+
+      <div class="product-card__badges"></div>
+    </div>
+  </a>
+
+  <div class="product-card__info">
+    <a href="#">
+      <p class="product-card__name">{{ product.nombre }}</p>
+    </a>
+    <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+      <span class="product-meta">Precio ${{ product.precio }}</span>
+      <span class="product-meta">Stock {{ product.cantidad }}</span>
+    </div>
+  </div>
+</article>
+{% endblock %}

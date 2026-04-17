@@ -1,0 +1,33 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.inicio, name='inicio'),
+    path('buscar/', views.buscar, name='buscar'),
+    path('empresa/', views.placeholder, {'page': 'empresa'}, name='empresa'),
+    path('tienda/', views.tienda, name='tienda'),
+    path('bijou/', views.tienda, {'categoria': 'bijou'}, name='bijou'),
+    path('acero-quirurgico/', views.tienda, {'categoria': 'acero_quirurgico'}, name='acero_quirurgico'),
+    path('plata/', views.tienda, {'categoria': 'enchapados'}, name='enchapados'),
+    path('catalogo/outlet/', views.tienda, {'categoria': 'gangas'}, name='gangas'),
+    path('joyas/', views.catalogo_joyas, name='catalogo_joyas'),
+    path('contacto/', views.placeholder, {'page': 'contacto'}, name='contacto'),
+    path('como-comprar/', views.placeholder, {'page': 'como-comprar'}, name='como_comprar'),
+    path('politica-de-cambios/', views.placeholder, {'page': 'politica-de-cambios'}, name='politica_de_cambios'),
+    path('envios/', views.placeholder, {'page': 'envios'}, name='envios'),
+    path('terminos/', views.placeholder, {'page': 'terminos'}, name='terminos'),
+    path('mi-cuenta/', views.mi_cuenta, name='mi_cuenta'),
+    path('mi-cuenta/compras/', views.mis_compras, name='mis_compras'),
+    path('ingresar/', views.ingresar, name='ingresar'),
+    path('login/', views.ingresar, name='login'),
+    path('registro/', views.registro, name='registro'),
+    path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
+    path('suscribirse/', views.suscribirse, name='suscribirse'),
+    path('carrito/', views.carrito_detalle, name='carrito'),
+    path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
+    path('carrito/agregar/<str:tipo>/<int:producto_id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/eliminar/<str:tipo>/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('terminos-condiciones/', views.placeholder, name='terminos_condiciones'),
+    path('privacidad/', views.placeholder, name='privacidad'),
+    path('<path:page>/', views.placeholder, name='page'),
+]

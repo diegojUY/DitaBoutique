@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block titulo %}500{% endblock %}
+
+{% block cabecera %}Error 500{% endblock %}
+
+{% block contenido %}
+
+<p>Error interno del servidor!</p>
+<img src="{% static 'img/500.png' %}" alt="Error 500">
+
+{% endblock %}
