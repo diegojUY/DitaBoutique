@@ -1,5 +1,2 @@
-[phases.build]
-cmds = ["python manage.py collectstatic --noinput"]
-
 [start]
-cmd = "python manage.py migrate --noinput && gunicorn ditaboutique.wsgi --bind 0.0.0.0:$PORT"
+cmd = "bash /app/start.sh"
