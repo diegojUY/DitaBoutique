@@ -68,6 +68,29 @@ def carrito_detalle(request):
 def finalizar_compra(request):
     cart_items = request.session.get('cart', {})
     cart_empty = not bool(cart_items)
+
+    if not cart_empty:
+        for key, item in cart_items.items():
+            tipo = item.get('tipo', 'producto')
+            cantidad_comprada = item.get('cantidad', 1)
+            product_id = item.get('product_id')
+            if tipo == 'joya':
+                try:
+                    joya = Joya.objects.get(id=product_id)
+                    joya.precio  # Joyas don't have cantidad field by default
+                except Joya.DoesNotExist:
+                    pass
+            else:
+                try:
+                    producto = Producto.objects.get(id=product_id)
+                    producto.cantidad = max(0, producto.cantidad - cantidad_comprada)
+                    producto.save()
+                except Producto.DoesNotExist:
+                    pass
+
+        cart = Cart(request)
+        cart.clear()
+
     return render(request, 'finalizar_compra.html', {
         'cart_empty': cart_empty,
     })

@@ -15,6 +15,9 @@
         {% for product in products %}
           <article class="search-result-card" data-product-id="{{ product.id }}" data-product-name="{{ product.nombre|escapejs }}" data-product-price="{{ product.precio }}" data-product-description="{{ product.descripcion|default:'Stock disponible: ' }}" data-product-quantity="{{ product.cantidad }}" data-product-type="producto" data-gallery="{{ product.gallery_urls|join:'|;|' }}">
             <a href="#" class="search-result-card__link">
+              {% if product.cantidad == 0 %}
+                <span class="badge-sin-stock">Sin stock</span>
+              {% endif %}
               {% if product.portada %}
                 <img src="{{ product.portada.url }}" alt="{{ product.nombre }}">
               {% endif %}
@@ -23,10 +26,14 @@
             <p>Precio: ${{ product.precio }}</p>
             <p>Stock disponible: {{ product.cantidad }}</p>
             <div class="product-card__actions">
-              {% if request.user.is_authenticated %}
-                <a href="{% url 'agregar_al_carrito' 'producto' product.id %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Agregar al carrito</a>
+              {% if product.cantidad > 0 %}
+                {% if request.user.is_authenticated %}
+                  <a href="{% url 'agregar_al_carrito' 'producto' product.id %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Agregar al carrito</a>
+                {% else %}
+                  <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Ingresar para comprar</a>
+                {% endif %}
               {% else %}
-                <a href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}" class="card-joya__button">Ingresar para comprar</a>
+                <span class="card-joya__button card-joya__button--disabled">Sin stock</span>
               {% endif %}
               {% if request.user.is_staff %}
                 <a href="{% url 'admin:tienda_producto_change' product.id %}" class="card-joya__button admin-edit-button" target="_blank" rel="noopener noreferrer">Editar producto</a>
