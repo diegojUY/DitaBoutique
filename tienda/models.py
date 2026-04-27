@@ -44,6 +44,7 @@ CATEGORY_CHOICES = [
     ('bijou', 'Bijou'),
     ('acero_quirurgico', 'Acero quirúrgico'),
     ('enchapados', 'Enchapados'),
+    ('accesorios', 'Accesorios'),
     ('alpaca', 'Alpaca'),
     ('gangas', 'Gangas'),
 ]

@@ -100,9 +100,7 @@ def tienda(request, categoria=None):
     products = Producto.objects.all()
     selected_category = categoria or request.GET.get('categoria')
     if selected_category:
-        if selected_category == 'accesorios':
-            products = products.exclude(categoria='gangas')
-        elif selected_category == 'temporada_invierno':
+        if selected_category == 'temporada_invierno':
             products = products.filter(temporada_invierno=True)
         else:
             products = products.filter(categoria=selected_category)
