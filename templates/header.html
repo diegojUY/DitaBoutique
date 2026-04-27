@@ -2,32 +2,34 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="/" class="site-logo">
-      <img src="{% static 'img/dita-logo.jpeg' %}" alt="DitaBoutique logo">
-      <span>Ditaboutique</span>
-    </a>
+    <div class="logo-dropdown">
+      <a href="{% url 'inicio' %}" class="site-logo" aria-label="Inicio">
+        <img src="{% static 'img/dita-logo.jpeg' %}" alt="DitaBoutique logo">
+        <span>Inicio</span>
+      </a>
 
-    <nav class="main-nav" aria-label="Menú principal">
-    <ul class="nav-list">
-      {% for category in nav_categories %}
-        <li class="nav-item">
+      <div class="logo-nav-dropdown" role="menu" aria-label="Categorías">
+        {% for category in nav_categories %}
           <a href="{{ category.url }}"
-             class="nav-link {% if category.is_sale %}nav-link--sale{% endif %}">
+             role="menuitem"
+             class="nav-link {% if category.is_sale %}nav-link--sale{% endif %} {% if category.is_winter %}nav-link--winter{% endif %}">
             {{ category.name }}
           </a>
-          {% if category.subcategories %}
-            <div class="nav-dropdown">
-              {% for sub in category.subcategories %}
-                <a href="{{ sub.url }}">{{ sub.name }}</a>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  </nav>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="header-center">
+      <form class="header-search" method="get" action="{% url 'buscar' %}">
+        <input type="search" name="q" placeholder="Buscar productos..." aria-label="Buscar productos">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
 
   <div class="header-actions">
+    {% if user.is_staff %}
+      <a href="{% url 'admin:tienda_producto_add' %}" class="header-icon header-add-product" aria-label="Agregar producto">Agregar producto</a>
+    {% endif %}
     {% if user.is_authenticated %}
       <a href="{% url 'carrito' %}" class="header-icon" style="position:relative" aria-label="Carrito">
         Carrito
@@ -57,14 +59,3 @@
     </div>
   </div>
 </header>
-<div class="header-search-row">
-  <div class="container">
-    {% if user.is_staff %}
-      <a href="{% url 'admin:tienda_producto_add' %}" class="header-icon header-add-product" aria-label="Agregar producto">Agregar producto</a>
-    {% endif %}
-    <form class="header-search" method="get" action="{% url 'buscar' %}">
-      <input type="search" name="q" placeholder="lentes de sol..." aria-label="Buscar lentes de sol...">
-      <button type="submit">Buscar</button>
-    </form>
-  </div>
-</div>

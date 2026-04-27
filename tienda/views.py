@@ -100,13 +100,23 @@ def tienda(request, categoria=None):
     products = Producto.objects.all()
     selected_category = categoria or request.GET.get('categoria')
     if selected_category:
-        products = products.filter(categoria=selected_category)
+        if selected_category == 'accesorios':
+            products = products.exclude(categoria='gangas')
+        elif selected_category == 'temporada_invierno':
+            products = products.filter(temporada_invierno=True)
+            if not products.exists():
+                products = Producto.objects.exclude(categoria='gangas')
+        else:
+            products = products.filter(categoria=selected_category)
 
     category_choices = [
         ('bijou', 'Bijou'),
         ('acero_quirurgico', 'Acero quirúrgico'),
         ('enchapados', 'Enchapados'),
+        ('alpaca', 'Alpaca'),
         ('gangas', 'Gangas'),
+        ('accesorios', 'Accesorios'),
+        ('temporada_invierno', 'Temporada de invierno'),
     ]
 
     return render(request, 'tienda.html', {
@@ -343,8 +353,22 @@ def global_context(request):
                 ],
             },
             {
+                "name": "Alpaca", "url": "/alpaca/", "is_sale": False,
+                "subcategories": [],
+            },
+            {
                 "name": "Gangas", "url": "/catalogo/outlet/",
                 "is_sale": True, "subcategories": [],
+            },
+            {
+                "name": "Accesorios", "url": "/accesorios/",
+                "is_sale": False, "subcategories": [],
+            },
+            {
+                "name": "Temporada de invierno", "url": "/temporada-invierno/",
+                "is_sale": False,
+                "is_winter": True,
+                "subcategories": [],
             },
         ],
 

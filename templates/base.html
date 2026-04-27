@@ -20,9 +20,11 @@
     {% include "top_banner.html" %}
   {% endblock %}
 
-  {% block header %}
-    {% include "header.html" %}
-  {% endblock %}
+  <div class="sticky-nav-wrapper">
+    {% block header %}
+      {% include "header.html" %}
+    {% endblock %}
+  </div>
 
   {% if messages %}
     <div class="alert-container">

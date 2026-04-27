@@ -44,6 +44,7 @@ CATEGORY_CHOICES = [
     ('bijou', 'Bijou'),
     ('acero_quirurgico', 'Acero quirúrgico'),
     ('enchapados', 'Enchapados'),
+    ('alpaca', 'Alpaca'),
     ('gangas', 'Gangas'),
 ]
 
@@ -96,6 +97,7 @@ class Producto(models.Model):
         choices=CATEGORY_CHOICES,
         default='enchapados',
     )
+    temporada_invierno = models.BooleanField(default=False)
     descripcion = models.TextField(blank=True, default='')
 
     def gallery_urls(self):
