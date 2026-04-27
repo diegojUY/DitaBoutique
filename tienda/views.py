@@ -104,8 +104,6 @@ def tienda(request, categoria=None):
             products = products.exclude(categoria='gangas')
         elif selected_category == 'temporada_invierno':
             products = products.filter(temporada_invierno=True)
-            if not products.exists():
-                products = Producto.objects.exclude(categoria='gangas')
         else:
             products = products.filter(categoria=selected_category)
 

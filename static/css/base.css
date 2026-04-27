@@ -459,7 +459,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 24px 20px;
+  padding: 24px 20px 24px 8px;
 }
 .header-center {
   flex: 1;
@@ -525,7 +525,7 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 8px;
   min-width: 220px;
@@ -535,11 +535,19 @@ body {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   z-index: 1300;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.24s ease, transform 0.24s ease, visibility 0.24s ease;
 }
 .menu-dropdown:hover .logo-nav-dropdown,
 .menu-dropdown:focus-within .logo-nav-dropdown,
 .logo-nav-dropdown:hover {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 .main-nav .nav-list {
   display: flex;
