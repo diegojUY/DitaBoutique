@@ -466,6 +466,11 @@ body {
   display: flex;
   justify-content: center;
 }
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .header-search-row {
   background: var(--color-accent);
   padding: 12px 0;
@@ -490,16 +495,35 @@ body {
   width: auto;
 }
 .site-logo span {
-  text-transform: uppercase;
-  letter-spacing: .12em;
+  text-transform: none;
+  letter-spacing: .06em;
   font-size: 13px;
 }
-.logo-dropdown {
+.menu-dropdown {
   position: relative;
+}
+.menu-toggle {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--color-black);
+  background: var(--color-black);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--color-white);
 }
 .logo-nav-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 0;
   display: none;
   flex-direction: column;
@@ -512,8 +536,9 @@ body {
   box-shadow: var(--shadow-card);
   z-index: 1300;
 }
-.logo-dropdown:hover .logo-nav-dropdown,
-.logo-dropdown:focus-within .logo-nav-dropdown {
+.menu-dropdown:hover .logo-nav-dropdown,
+.menu-dropdown:focus-within .logo-nav-dropdown,
+.logo-nav-dropdown:hover {
   display: flex;
 }
 .main-nav .nav-list {
@@ -546,6 +571,14 @@ body {
   border-color: #84c8ee;
   color: #0f4465;
   font-weight: 700;
+}
+.logo-nav-dropdown .nav-link,
+.logo-nav-dropdown .nav-link--sale,
+.logo-nav-dropdown .nav-link--winter {
+  width: 100%;
+  min-width: 220px;
+  justify-content: flex-start;
+  padding: 0 14px;
 }
 .main-nav .nav-link:hover,
 .main-nav .nav-link--sale:hover,
@@ -1484,6 +1517,10 @@ ul  { list-style: none; }
   .header-center {
     width: 100%;
   }
+  .header-brand {
+    width: 100%;
+    justify-content: center;
+  }
   .main-nav .nav-list {
     flex-wrap: wrap;
     justify-content: center;
@@ -1574,6 +1611,9 @@ ul  { list-style: none; }
     text-align: center;
   }
   .site-logo { justify-content: center; }
+  .header-brand {
+    justify-content: center;
+  }
   .main-nav .nav-list {
     flex-wrap: wrap;
     justify-content: center;

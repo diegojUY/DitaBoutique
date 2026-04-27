@@ -2,21 +2,29 @@
 
 <header class="site-header">
   <div class="container">
-    <div class="logo-dropdown">
+    <div class="header-brand">
+      <div class="menu-dropdown">
+        <button class="menu-toggle" type="button" aria-label="Abrir menú de categorías">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="logo-nav-dropdown" role="menu" aria-label="Categorías">
+          {% for category in nav_categories %}
+            <a href="{{ category.url }}"
+               role="menuitem"
+               class="nav-link {% if category.is_sale %}nav-link--sale{% endif %} {% if category.is_winter %}nav-link--winter{% endif %}">
+              {{ category.name }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+
       <a href="{% url 'inicio' %}" class="site-logo" aria-label="Inicio">
         <img src="{% static 'img/dita-logo.jpeg' %}" alt="DitaBoutique logo">
-        <span>Inicio</span>
+        <span>Dita Boutique</span>
       </a>
-
-      <div class="logo-nav-dropdown" role="menu" aria-label="Categorías">
-        {% for category in nav_categories %}
-          <a href="{{ category.url }}"
-             role="menuitem"
-             class="nav-link {% if category.is_sale %}nav-link--sale{% endif %} {% if category.is_winter %}nav-link--winter{% endif %}">
-            {{ category.name }}
-          </a>
-        {% endfor %}
-      </div>
     </div>
 
     <div class="header-center">
