@@ -47,6 +47,7 @@ CATEGORY_CHOICES = [
     ('accesorios', 'Accesorios'),
     ('alpaca', 'Alpaca'),
     ('gangas', 'Gangas'),
+    ('temporada_invierno', 'Temporada de invierno'),
 ]
 
 
@@ -98,7 +99,6 @@ class Producto(models.Model):
         choices=CATEGORY_CHOICES,
         default='enchapados',
     )
-    temporada_invierno = models.BooleanField(default=False)
     descripcion = models.TextField(blank=True, default='')
 
     def gallery_urls(self):

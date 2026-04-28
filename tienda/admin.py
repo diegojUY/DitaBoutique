@@ -16,9 +16,9 @@ class JoyaImagenInline(admin.TabularInline):
     extra = 1
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'precio', 'cantidad', 'categoria', 'temporada_invierno')
+    list_display = ('nombre', 'precio', 'cantidad', 'categoria')
     search_fields = ('nombre',)
-    list_filter = ('categoria', 'temporada_invierno', 'cantidad')
+    list_filter = ('categoria', 'cantidad')
     ordering = ('nombre',)
     inlines = [ProductoImagenInline]
 
