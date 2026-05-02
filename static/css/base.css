@@ -325,17 +325,19 @@
 .payment-method-card {
   margin-top: 14px;
   position: relative;
+  width: 100%;
+  max-width: 560px;
   border: 1px solid rgba(0,0,0,0.12);
   border-radius: var(--radius-md);
   background: #fff;
   box-shadow: 0 16px 34px rgba(0,0,0,0.08);
-  padding: 22px 18px 16px;
+  padding: 52px 20px 18px;
 }
 
 .payment-method-card__close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   width: 34px;
   height: 34px;
   border: none;

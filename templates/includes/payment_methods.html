@@ -1,10 +1,9 @@
 <div class="payment-methods-block">
   <div class="payment-methods">
     <button type="button" class="payment-method__button" data-payment-target="transferencia">Transferencia bancaria</button>
-    <button type="button" class="payment-method__button" data-payment-target="deposito">Depósito</button>
     <button type="button" class="payment-method__button" data-payment-target="efectivo">Efectivo al coordinar envío</button>
-    <button type="button" class="payment-method__button" data-payment-target="abitab">Giro por Abitab</button>
-    <button type="button" class="payment-method__button" data-payment-target="redpagos">RedPagos</button>
+    <button type="button" class="payment-method__button" data-payment-target="giros">Giros</button>
+    <button type="button" class="payment-method__button" data-payment-target="deposito">Depósitos</button>
   </div>
 
   <div class="payment-method-card" hidden>
@@ -19,11 +18,8 @@
       <article class="payment-method-card__content" data-payment-card="efectivo" hidden>
         {% include 'includes/efectivo.html' %}
       </article>
-      <article class="payment-method-card__content" data-payment-card="abitab" hidden>
-        {% include 'includes/giro_abitab.html' %}
-      </article>
-      <article class="payment-method-card__content" data-payment-card="redpagos" hidden>
-        {% include 'includes/redpagos.html' %}
+      <article class="payment-method-card__content" data-payment-card="giros" hidden>
+        {% include 'includes/giros.html' %}
       </article>
     </div>
   </div>
