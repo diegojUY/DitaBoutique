@@ -52,25 +52,56 @@ function initHomeGalleryRotation() {
 
 document.addEventListener('DOMContentLoaded', initHomeGalleryRotation);
 
-function initPaymentMethodsAccordion() {
-  const toggles = document.querySelectorAll('.payment-method__toggle');
-  if (!toggles.length) return;
+function initPaymentMethodCards() {
+  const blocks = document.querySelectorAll('.payment-methods-block');
+  if (!blocks.length) return;
 
-  toggles.forEach((toggle) => {
-    toggle.addEventListener('click', function () {
-      const method = this.closest('.payment-method');
-      if (!method) return;
-      const content = method.querySelector('.payment-method__content');
-      if (!content) return;
+  blocks.forEach((block) => {
+    const modal = block.querySelector('.payment-detail-modal');
+    const cards = block.querySelectorAll('.payment-detail-card');
+    const closeButton = block.querySelector('.payment-detail-modal__close');
+    const backdrop = block.querySelector('.payment-detail-modal__backdrop');
+    const buttons = block.querySelectorAll('.payment-method__button');
 
-      const isOpen = method.classList.toggle('is-open');
-      this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      content.hidden = !isOpen;
+    if (!modal || !cards.length || !buttons.length) return;
+
+    const closeModal = function () {
+      modal.hidden = true;
+      cards.forEach((card) => {
+        card.hidden = true;
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', function () {
+        const target = this.getAttribute('data-payment-target');
+        const activeCard = block.querySelector('[data-payment-card="' + target + '"]');
+        if (!activeCard) return;
+
+        cards.forEach((card) => {
+          card.hidden = card !== activeCard;
+        });
+        modal.hidden = false;
+      });
+    });
+
+    if (closeButton) {
+      closeButton.addEventListener('click', closeModal);
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', closeModal);
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !modal.hidden) {
+        closeModal();
+      }
     });
   });
 }
 
-document.addEventListener('DOMContentLoaded', initPaymentMethodsAccordion);
+document.addEventListener('DOMContentLoaded', initPaymentMethodCards);
 
 // Wishlist toggle (llamado desde product_card.html)
 async function toggleWishlist(event, btn) {

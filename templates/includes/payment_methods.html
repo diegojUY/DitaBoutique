@@ -1,67 +1,48 @@
-<div class="payment-methods">
-  <div class="payment-method">
-    <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Transferencia bancaria" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
-        <span class="payment-method__chevron">&#9654;</span>
-      </button>
-      <span class="payment-method__title">Transferencia bancaria</span>
-    </div>
-    <div class="payment-method__content" hidden>
-      <p>
-        BROU: 110794545-00001<br>
-        Desde otros bancos: 11079454500001<br>
-        Tatiana Alvarez<br>
-        PREX: 391372 Tatiana Alvarez<br>
-        OCABLUE: 6273135 Diego Jorge
-      </p>
-    </div>
+<div class="payment-methods-block">
+  <div class="payment-methods">
+    <button type="button" class="payment-method__button" data-payment-target="transferencia">Transferencia bancaria</button>
+    <button type="button" class="payment-method__button" data-payment-target="deposito">Depósito</button>
+    <button type="button" class="payment-method__button" data-payment-target="efectivo">Efectivo al coordinar envío</button>
+    <button type="button" class="payment-method__button" data-payment-target="abitab">Giro por Abitab</button>
+    <button type="button" class="payment-method__button" data-payment-target="redpagos">RedPagos</button>
   </div>
 
-  <div class="payment-method">
-    <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Depósito" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
-        <span class="payment-method__chevron">&#9654;</span>
-      </button>
-      <span class="payment-method__title">Depósito</span>
-    </div>
-    <div class="payment-method__content" hidden>
-      <p>Podés depositar en cuenta BROU y enviarnos el comprobante para validar tu pago.</p>
-    </div>
-  </div>
+  <div class="payment-detail-modal" hidden>
+    <div class="payment-detail-modal__backdrop"></div>
+    <div class="payment-detail-modal__card">
+      <button type="button" class="payment-detail-modal__close" aria-label="Cerrar información de pago">&times;</button>
+      <div class="payment-detail-modal__body">
+        <article class="payment-detail-card" data-payment-card="transferencia" hidden>
+          <h3>Transferencia bancaria</h3>
+          <p>
+            BROU: 110794545-00001<br>
+            Desde otros bancos: 11079454500001<br>
+            Tatiana Alvarez<br>
+            PREX: 391372 Tatiana Alvarez<br>
+            OCABLUE: 6273135 Diego Jorge
+          </p>
+        </article>
 
-  <div class="payment-method">
-    <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Efectivo al coordinar envío" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
-        <span class="payment-method__chevron">&#9654;</span>
-      </button>
-      <span class="payment-method__title">Efectivo al coordinar envío</span>
-    </div>
-    <div class="payment-method__content" hidden>
-      <p>Coordinamos contigo el envío y abonás en efectivo al momento de la entrega.</p>
-    </div>
-  </div>
+        <article class="payment-detail-card" data-payment-card="deposito" hidden>
+          <h3>Depósito</h3>
+          <p>Podés depositar en cuenta BROU y enviarnos el comprobante para validar tu pago.</p>
+        </article>
 
-  <div class="payment-method">
-    <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Giro por Abitab" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
-        <span class="payment-method__chevron">&#9654;</span>
-      </button>
-      <span class="payment-method__title">Giro por Abitab</span>
-    </div>
-    <div class="payment-method__content" hidden>
-      <p>Te compartimos los datos de destinatario por WhatsApp cuando confirmes este método.</p>
-    </div>
-  </div>
+        <article class="payment-detail-card" data-payment-card="efectivo" hidden>
+          <h3>Efectivo al coordinar envío</h3>
+          <p>Coordinamos contigo el envío y abonás en efectivo al momento de la entrega.</p>
+        </article>
 
-  <div class="payment-method">
-    <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar RedPagos" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
-        <span class="payment-method__chevron">&#9654;</span>
-      </button>
-      <span class="payment-method__title">RedPagos</span>
-    </div>
-    <div class="payment-method__content" hidden>
-      <p>Al seleccionar este método, te enviamos por WhatsApp los datos para hacer el giro.</p>
+        <article class="payment-detail-card" data-payment-card="abitab" hidden>
+          <h3>Giro por Abitab</h3>
+          <p>Te compartimos los datos de destinatario por WhatsApp cuando confirmes este método.</p>
+        </article>
+
+        <article class="payment-detail-card" data-payment-card="redpagos" hidden>
+          <h3>RedPagos</h3>
+          <p>Al seleccionar este método, te enviamos por WhatsApp los datos para hacer el giro.</p>
+        </article>
+      </div>
     </div>
   </div>
 </div>

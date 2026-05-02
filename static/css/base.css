@@ -298,49 +298,82 @@
   margin-top: 14px;
 }
 
-.payment-method {
+.payment-method__button {
+  width: 100%;
   border: 1px solid rgba(0,0,0,0.12);
   border-radius: var(--radius-sm);
   background: #fff;
-  padding: 10px 12px;
+  padding: 15px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
-.payment-method__header {
+.payment-method__button:hover {
+  border-color: rgba(0,0,0,0.24);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+.payment-detail-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.payment-method__toggle {
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  border: 1px solid rgba(0,0,0,0.18);
-  border-radius: 999px;
+  padding: 20px;
+}
+
+.payment-detail-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.payment-detail-modal__card {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  border: 1px solid rgba(0,0,0,0.12);
   background: #fff;
-  cursor: pointer;
-  padding: 0;
+  border-radius: var(--radius-md);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+  padding: 28px 24px 24px;
 }
 
-.payment-method__chevron {
-  font-size: 11px;
+.payment-detail-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  color: var(--color-dark);
+  font-size: 26px;
   line-height: 1;
-  transition: transform var(--transition);
+  cursor: pointer;
 }
 
-.payment-method.is-open .payment-method__chevron {
-  transform: rotate(90deg);
+.payment-detail-modal__close:hover {
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
-.payment-method__title {
-  font-weight: 700;
+.payment-detail-card h3 {
+  margin: 0 0 14px;
+  font-size: 24px;
   color: var(--color-dark);
 }
 
-.payment-method__content p {
-  margin: 10px 0 0;
+.payment-detail-card p {
+  margin: 0;
   color: var(--color-gray);
   line-height: 1.6;
 }
@@ -382,6 +415,9 @@
     align-items: flex-start;
   }
   .checkout-modal {
+    padding: 12px;
+  }
+  .payment-detail-modal {
     padding: 12px;
   }
   .checkout-modal__actions {
