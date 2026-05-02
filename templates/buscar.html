@@ -13,7 +13,7 @@
     {% if products %}
       <div class="search-results">
         {% for product in products %}
-          <article class="search-result-card" data-product-id="{{ product.id }}" data-product-name="{{ product.nombre|escapejs }}" data-product-price="{{ product.precio }}" data-product-description="{{ product.descripcion|default:'Stock disponible: ' }}" data-product-quantity="{{ product.cantidad }}" data-product-type="producto" data-gallery="{{ product.gallery_urls|join:'|;|' }}">
+          <article class="search-result-card" data-product-id="{{ product.id }}" data-product-name="{{ product.nombre|escapejs }}" data-product-price="{{ product.precio }}" data-product-description="{{ product.descripcion|default:product.get_categoria_display|escapejs }}{% if request.user.is_staff %} · Stock disponible: {{ product.cantidad }}{% endif %}" data-product-quantity="{{ product.cantidad }}" data-product-type="producto" data-gallery="{{ product.gallery_urls|join:'|;|' }}">
             <a href="#" class="search-result-card__link">
               {% if product.cantidad == 0 %}
                 <span class="badge-sin-stock">Sin stock</span>
@@ -24,7 +24,9 @@
               <h2>{{ product.nombre }}</h2>
             </a>
             <p>Precio: ${{ product.precio }}</p>
-            <p>Stock disponible: {{ product.cantidad }}</p>
+            {% if request.user.is_staff %}
+              <p>Stock disponible: {{ product.cantidad }}</p>
+            {% endif %}
             <div class="product-card__actions">
               {% if product.cantidad > 0 %}
                 {% if request.user.is_authenticated %}

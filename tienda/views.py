@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from decimal import Decimal
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import TemplateDoesNotExist
@@ -62,37 +64,88 @@ def carrito_detalle(request):
     return render(request, 'carrito.html', {
         'cart_items': cart_items,
         'total_carrito': total_carrito,
+        'checkout_modal_open': False,
     })
 
 
 def finalizar_compra(request):
-    cart_items = request.session.get('cart', {})
-    cart_empty = not bool(cart_items)
+    if not request.user.is_authenticated:
+        login_url = f"{reverse('login')}?next={quote(reverse('carrito'))}"
+        return redirect(login_url)
 
-    if not cart_empty:
-        for key, item in cart_items.items():
+    if request.method != 'POST':
+        return redirect('carrito')
+
+    cart_items = request.session.get('cart', {})
+    if not cart_items:
+        return render(request, 'carrito.html', {
+            'cart_items': {},
+            'total_carrito': 0,
+            'checkout_modal_open': True,
+            'checkout_error': 'Su carrito está vacío.',
+            'checkout_unidades': 0,
+        })
+
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+    customer_name = profile.full_name or request.user.get_full_name() or request.user.username
+    domicilio = profile.address or 'No informado'
+    ciudad = profile.department or 'No informada'
+    estado = profile.department or 'No informado'
+
+    checkout_items = {key: value.copy() for key, value in cart_items.items()}
+    checkout_unidades = sum(item.get('cantidad', 0) for item in checkout_items.values())
+
+    total_carrito = Decimal('0.00')
+    productos_detalle = []
+    for item in checkout_items.values():
+        cantidad = int(item.get('cantidad', 1))
+        precio = Decimal(str(item.get('precio', '0')))
+        subtotal = precio * cantidad
+        total_carrito += subtotal
+        productos_detalle.append(f"{item.get('nombre', 'Producto')} x{cantidad} - ${subtotal}")
+
+    with transaction.atomic():
+        compra = Adquirido.objects.create(
+            user=request.user,
+            nombre=customer_name[:30],
+            domicilio=domicilio[:50],
+            ciudad=ciudad[:60],
+            estado=estado[:50],
+            pais='Uruguay',
+            sitioweb='https://ditaboutique.local/orden',
+            productos='\n'.join(productos_detalle),
+            total=total_carrito,
+        )
+
+        for item in checkout_items.values():
             tipo = item.get('tipo', 'producto')
             cantidad_comprada = item.get('cantidad', 1)
             product_id = item.get('product_id')
             if tipo == 'joya':
-                try:
-                    joya = Joya.objects.get(id=product_id)
-                    joya.precio  # Joyas don't have cantidad field by default
-                except Joya.DoesNotExist:
-                    pass
-            else:
-                try:
-                    producto = Producto.objects.get(id=product_id)
-                    producto.cantidad = max(0, producto.cantidad - cantidad_comprada)
-                    producto.save()
-                except Producto.DoesNotExist:
-                    pass
+                continue
+            try:
+                producto = Producto.objects.get(id=product_id)
+                producto.cantidad = max(0, producto.cantidad - cantidad_comprada)
+                producto.save()
+            except Producto.DoesNotExist:
+                pass
 
         cart = Cart(request)
         cart.clear()
 
-    return render(request, 'finalizar_compra.html', {
-        'cart_empty': cart_empty,
+    return render(request, 'carrito.html', {
+        'cart_items': checkout_items,
+        'total_carrito': float(total_carrito),
+        'checkout_modal_open': True,
+        'checkout_unidades': checkout_unidades,
+        'compra': compra,
+        'payment_methods': [
+            'Transferencia bancaria',
+            'Depósito',
+            'Efectivo al coordinar envío',
+            'Giro por Abitab',
+            'RedPagos',
+        ],
     })
 
 

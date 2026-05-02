@@ -6,6 +6,7 @@ from django.utils import timezone
 
 class Adquirido(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='adquiridos')
+    numero_orden = models.CharField(max_length=24, unique=True, null=True, blank=True, db_index=True)
     nombre = models.CharField(max_length=30)
     domicilio = models.CharField(max_length=50)
     ciudad = models.CharField(max_length=60)
@@ -15,6 +16,13 @@ class Adquirido(models.Model):
     productos = models.TextField(blank=True, default='')
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.numero_orden and self.pk:
+            numero = f"OC-{self.created_at:%Y%m%d}-{self.pk:06d}"
+            Adquirido.objects.filter(pk=self.pk).update(numero_orden=numero)
+            self.numero_orden = numero
 
     def __str__(self):
         return f"{self.nombre} - {self.created_at:%Y-%m-%d}"

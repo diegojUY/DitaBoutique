@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container">
   <section class="login-panel">
-    <div class="cart-page-main">
+    <div class="cart-page-main{% if checkout_modal_open %} cart-page-main--blurred{% endif %}">
       <div class="login-card cart-card">
         <div class="login-card__header">
           <h1>Tu Carrito</h1>
@@ -54,16 +54,55 @@
 
       <div class="cart-summary">
         <div>
-          <p>Total artículos: <strong>{{ unidades_carrito }}</strong></p>
+          <p>Total artículos: <strong>{% if checkout_modal_open %}{{ checkout_unidades|default:0 }}{% else %}{{ unidades_carrito }}{% endif %}</strong></p>
           <strong>Total a pagar: ${{ total_carrito }}</strong>
         </div>
-        {% if cart_items %}
-          <a href="{% url 'finalizar_compra' %}" target="_blank" rel="noopener noreferrer" class="btn-primary">Proceder al pago</a>
+        {% if cart_items and not checkout_modal_open %}
+          <form method="post" action="{% url 'finalizar_compra' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary">Proceder al pago</button>
+          </form>
+        {% elif checkout_modal_open %}
+          <a href="{% url 'carrito' %}" class="btn-primary">Cerrar pago</a>
         {% else %}
           <p class="cart-empty-error">Su carrito está vacío</p>
         {% endif %}
       </div>
     </div>
+
+    {% if checkout_modal_open %}
+      <div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+        <div class="checkout-modal__backdrop"></div>
+        <div class="checkout-modal__card login-card cart-card checkout-card">
+          <div class="login-card__header">
+            <h1 id="checkout-title">Información de pago</h1>
+            <p>Tu orden fue creada correctamente. Te dejamos los métodos para completar el pago.</p>
+          </div>
+
+          {% if checkout_error %}
+            <p class="checkout-error">{{ checkout_error }}</p>
+          {% else %}
+            <div class="checkout-order-data">
+              <p><strong>Número de orden:</strong> {{ compra.numero_orden }}</p>
+              <p><strong>Usuario:</strong> {{ request.user.username }}</p>
+              <p><strong>Total:</strong> ${{ compra.total }}</p>
+            </div>
+            <div class="checkout-info">
+              <p>Aceptamos los siguientes métodos de pago:</p>
+              <ul>
+                {% for method in payment_methods %}
+                  <li>{{ method }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          <div class="checkout-modal__actions">
+            <a href="{% url 'carrito' %}" class="btn-primary">Cerrar</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </section>
 </div>
 {% endblock %}

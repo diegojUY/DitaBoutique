@@ -2,8 +2,8 @@ from django.contrib import admin
 from tienda.models import Adquirido, Producto, Joya, Subscriber, ProductoImagen, JoyaImagen
 
 class AdquiridoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'user', 'ciudad', 'pais', 'total', 'created_at')
-    search_fields = ('nombre', 'pais', 'user__username')
+    list_display = ('numero_orden', 'nombre', 'user', 'ciudad', 'pais', 'total', 'created_at')
+    search_fields = ('numero_orden', 'nombre', 'pais', 'user__username')
     list_filter = ('ciudad', 'pais', 'created_at')
     ordering = ('-created_at',)
 
