@@ -198,7 +198,6 @@
 }
 
 .cart-page-main--blurred {
-  filter: blur(4px);
   pointer-events: none;
   user-select: none;
 }
@@ -236,14 +235,18 @@
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 0;
 }
 
 .checkout-modal__card {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 620px;
   width: 100%;
   border: 1px solid rgba(0,0,0,0.12);
+  filter: none;
 }
 
 .checkout-order-data {
