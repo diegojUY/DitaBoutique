@@ -334,8 +334,8 @@
 
 .payment-method-card__close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   width: 34px;
   height: 34px;
   border: none;
@@ -345,6 +345,7 @@
   font-size: 26px;
   line-height: 1;
   cursor: pointer;
+  z-index: 2;
 }
 
 .payment-method-card__close:hover {

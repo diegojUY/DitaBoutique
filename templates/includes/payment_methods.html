@@ -1,4 +1,4 @@
-<div class="payment-methods-block" id="payment-methods-block">
+<div class="payment-methods-block">
   <div class="payment-methods">
     <button type="button" class="payment-method__button" data-payment-target="transferencia">Transferencia bancaria</button>
     <button type="button" class="payment-method__button" data-payment-target="deposito">Depósito</button>
@@ -7,8 +7,8 @@
     <button type="button" class="payment-method__button" data-payment-target="redpagos">RedPagos</button>
   </div>
 
-  <div class="payment-method-card" id="payment-method-card" hidden>
-    <button type="button" class="payment-method-card__close" id="payment-method-card-close" aria-label="Cerrar información de pago">&times;</button>
+  <div class="payment-method-card" hidden>
+    <button type="button" class="payment-method-card__close" aria-label="Cerrar información de pago">&times;</button>
     <div class="payment-method-card__body">
       <article class="payment-method-card__content" data-payment-card="transferencia" hidden>
         {% include 'includes/transferencia_bancaria.html' %}
@@ -31,46 +31,48 @@
 
 <script>
   (function () {
-    var block = document.getElementById('payment-methods-block');
-    if (!block) {
+    var blocks = document.querySelectorAll('.payment-methods-block');
+    if (!blocks.length) {
       return;
     }
 
-    var buttons = block.querySelectorAll('.payment-method__button');
-    var card = block.querySelector('#payment-method-card');
-    var closeButton = block.querySelector('#payment-method-card-close');
-    var contents = block.querySelectorAll('.payment-method-card__content');
+    blocks.forEach(function (block) {
+      var buttons = block.querySelectorAll('.payment-method__button');
+      var card = block.querySelector('.payment-method-card');
+      var closeButton = block.querySelector('.payment-method-card__close');
+      var contents = block.querySelectorAll('.payment-method-card__content');
 
-    var openCard = function (target) {
-      var active = block.querySelector('[data-payment-card="' + target + '"]');
-      if (!card || !active) {
-        return;
+      var openCard = function (target) {
+        var active = block.querySelector('[data-payment-card="' + target + '"]');
+        if (!card || !active) {
+          return;
+        }
+
+        contents.forEach(function (item) {
+          item.hidden = item !== active;
+        });
+        card.hidden = false;
+      };
+
+      var closeCard = function () {
+        if (!card) {
+          return;
+        }
+        card.hidden = true;
+        contents.forEach(function (item) {
+          item.hidden = true;
+        });
+      };
+
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          openCard(button.getAttribute('data-payment-target'));
+        });
+      });
+
+      if (closeButton) {
+        closeButton.addEventListener('click', closeCard);
       }
-
-      contents.forEach(function (item) {
-        item.hidden = item !== active;
-      });
-      card.hidden = false;
-    };
-
-    var closeCard = function () {
-      if (!card) {
-        return;
-      }
-      card.hidden = true;
-      contents.forEach(function (item) {
-        item.hidden = true;
-      });
-    };
-
-    buttons.forEach(function (button) {
-      button.addEventListener('click', function () {
-        openCard(button.getAttribute('data-payment-target'));
-      });
     });
-
-    if (closeButton) {
-      closeButton.addEventListener('click', closeCard);
-    }
   })();
 </script>
