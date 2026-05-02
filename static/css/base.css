@@ -305,13 +305,41 @@
   padding: 10px 12px;
 }
 
-.payment-method summary {
+.payment-method__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-method__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(0,0,0,0.18);
+  border-radius: 999px;
+  background: #fff;
   cursor: pointer;
+  padding: 0;
+}
+
+.payment-method__chevron {
+  font-size: 11px;
+  line-height: 1;
+  transition: transform var(--transition);
+}
+
+.payment-method.is-open .payment-method__chevron {
+  transform: rotate(90deg);
+}
+
+.payment-method__title {
   font-weight: 700;
   color: var(--color-dark);
 }
 
-.payment-method p {
+.payment-method__content p {
   margin: 10px 0 0;
   color: var(--color-gray);
   line-height: 1.6;

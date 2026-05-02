@@ -52,6 +52,26 @@ function initHomeGalleryRotation() {
 
 document.addEventListener('DOMContentLoaded', initHomeGalleryRotation);
 
+function initPaymentMethodsAccordion() {
+  const toggles = document.querySelectorAll('.payment-method__toggle');
+  if (!toggles.length) return;
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', function () {
+      const method = this.closest('.payment-method');
+      if (!method) return;
+      const content = method.querySelector('.payment-method__content');
+      if (!content) return;
+
+      const isOpen = method.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      content.hidden = !isOpen;
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initPaymentMethodsAccordion);
+
 // Wishlist toggle (llamado desde product_card.html)
 async function toggleWishlist(event, btn) {
   event.preventDefault();
