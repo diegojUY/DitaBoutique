@@ -1,16 +1,16 @@
 <div class="payment-methods-block">
   <div class="payment-methods">
-    <button type="button" class="payment-method__button" data-payment-target="transferencia">Transferencia bancaria</button>
-    <button type="button" class="payment-method__button" data-payment-target="deposito">Depósito</button>
-    <button type="button" class="payment-method__button" data-payment-target="efectivo">Efectivo al coordinar envío</button>
-    <button type="button" class="payment-method__button" data-payment-target="abitab">Giro por Abitab</button>
-    <button type="button" class="payment-method__button" data-payment-target="redpagos">RedPagos</button>
+    <button type="button" class="payment-method__button" data-payment-target="transferencia" onclick="window.openPaymentDetailCard(this)">Transferencia bancaria</button>
+    <button type="button" class="payment-method__button" data-payment-target="deposito" onclick="window.openPaymentDetailCard(this)">Depósito</button>
+    <button type="button" class="payment-method__button" data-payment-target="efectivo" onclick="window.openPaymentDetailCard(this)">Efectivo al coordinar envío</button>
+    <button type="button" class="payment-method__button" data-payment-target="abitab" onclick="window.openPaymentDetailCard(this)">Giro por Abitab</button>
+    <button type="button" class="payment-method__button" data-payment-target="redpagos" onclick="window.openPaymentDetailCard(this)">RedPagos</button>
   </div>
 
   <div class="payment-detail-modal" hidden>
-    <div class="payment-detail-modal__backdrop"></div>
+    <div class="payment-detail-modal__backdrop" onclick="window.closePaymentDetailCard(this)"></div>
     <div class="payment-detail-modal__card">
-      <button type="button" class="payment-detail-modal__close" aria-label="Cerrar información de pago">&times;</button>
+      <button type="button" class="payment-detail-modal__close" aria-label="Cerrar información de pago" onclick="window.closePaymentDetailCard(this)">&times;</button>
       <div class="payment-detail-modal__body">
         <article class="payment-detail-card" data-payment-card="transferencia" hidden>
           <h3>Transferencia bancaria</h3>
@@ -46,3 +46,58 @@
     </div>
   </div>
 </div>
+
+<script>
+  window.openPaymentDetailCard = function (button) {
+    var block = button.closest('.payment-methods-block');
+    if (!block) {
+      return;
+    }
+
+    var target = button.getAttribute('data-payment-target');
+    var modal = block.querySelector('.payment-detail-modal');
+    var cards = block.querySelectorAll('.payment-detail-card');
+    var activeCard = block.querySelector('[data-payment-card="' + target + '"]');
+
+    if (!modal || !activeCard) {
+      return;
+    }
+
+    cards.forEach(function (card) {
+      card.hidden = card !== activeCard;
+    });
+
+    modal.hidden = false;
+  };
+
+  window.closePaymentDetailCard = function (trigger) {
+    var block = trigger.closest('.payment-methods-block');
+    if (!block) {
+      return;
+    }
+
+    var modal = block.querySelector('.payment-detail-modal');
+    var cards = block.querySelectorAll('.payment-detail-card');
+    if (!modal) {
+      return;
+    }
+
+    modal.hidden = true;
+    cards.forEach(function (card) {
+      card.hidden = true;
+    });
+  };
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape') {
+      return;
+    }
+
+    document.querySelectorAll('.payment-methods-block .payment-detail-modal:not([hidden])').forEach(function (modal) {
+      modal.hidden = true;
+      modal.querySelectorAll('.payment-detail-card').forEach(function (card) {
+        card.hidden = true;
+      });
+    });
+  });
+</script>
