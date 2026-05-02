@@ -83,20 +83,12 @@
           {% if checkout_error %}
             <p class="checkout-error">{{ checkout_error }}</p>
           {% else %}
-            <div class="checkout-order-data">
-              <p><strong>Número de orden:</strong> {{ compra.numero_orden }}</p>
-              <p><strong>Usuario:</strong> {{ request.user.username }}</p>
-              <p><strong>Total:</strong> ${{ compra.total }}</p>
-            </div>
             <div class="checkout-info">
               <p>Aceptamos los siguientes métodos de pago:</p>
               {% include 'includes/payment_methods.html' %}
             </div>
           {% endif %}
 
-          <div class="checkout-modal__actions">
-            <a href="https://api.whatsapp.com/send?text=Hola%20DitaBoutique%2C%20necesito%20ayuda%20con%20mi%20compra" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">Contactar por WhatsApp</a>
-          </div>
         </div>
       </div>
     {% endif %}

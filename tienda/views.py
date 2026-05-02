@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from decimal import Decimal
 from django.db import transaction
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import TemplateDoesNotExist
 from django.urls import reverse
@@ -12,6 +13,44 @@ from urllib.parse import quote
 
 from .cart import Cart
 from .models import Adquirido, Producto, Joya, Subscriber, UserProfile
+
+
+PAYMENT_METHODS = {
+    'transferencia': {
+        'title': 'Transferencia bancaria',
+        'lines': [
+            'BROU: 110794545-00001',
+            'Desde otros bancos: 11079454500001',
+            'Tatiana Alvarez',
+            'PREX: 391372 Tatiana Alvarez',
+            'OCABLUE: 6273135 Diego Jorge',
+        ],
+    },
+    'deposito': {
+        'title': 'Depósito',
+        'lines': [
+            'Podés depositar en cuenta BROU y enviarnos el comprobante para validar tu pago.',
+        ],
+    },
+    'efectivo': {
+        'title': 'Efectivo al coordinar envío',
+        'lines': [
+            'Coordinamos contigo el envío y abonás en efectivo al momento de la entrega.',
+        ],
+    },
+    'abitab': {
+        'title': 'Giro por Abitab',
+        'lines': [
+            'Te compartimos los datos de destinatario por WhatsApp cuando confirmes este método.',
+        ],
+    },
+    'redpagos': {
+        'title': 'RedPagos',
+        'lines': [
+            'Al seleccionar este método, te enviamos por WhatsApp los datos para hacer el giro.',
+        ],
+    },
+}
 
 # Create your views here.
 def inicio(request):
@@ -139,13 +178,19 @@ def finalizar_compra(request):
         'checkout_modal_open': True,
         'checkout_unidades': checkout_unidades,
         'compra': compra,
-        'payment_methods': [
-            'Transferencia bancaria',
-            'Depósito',
-            'Efectivo al coordinar envío',
-            'Giro por Abitab',
-            'RedPagos',
-        ],
+    })
+
+
+def payment_method_detail(request, method):
+    method_data = PAYMENT_METHODS.get(method)
+    if not method_data:
+        raise Http404('Método de pago no encontrado.')
+
+    next_url = request.GET.get('next') or reverse('carrito')
+    return render(request, 'payment_method_detail.html', {
+        'method_title': method_data['title'],
+        'method_lines': method_data['lines'],
+        'next_url': next_url,
     })
 
 

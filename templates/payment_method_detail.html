@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ method_title }} - DitaBoutique{% endblock %}
+
+{% block content %}
+<div class="container">
+  <section class="login-panel">
+    <div class="login-card cart-card payment-detail-view">
+      <div class="login-card__header">
+        <h1>{{ method_title }}</h1>
+        <p>Información del método de pago seleccionado.</p>
+      </div>
+
+      <div class="payment-detail-view__content">
+        {% for line in method_lines %}
+          <p>{{ line }}</p>
+        {% endfor %}
+      </div>
+
+      <div class="payment-detail-view__actions">
+        <a href="{{ next_url }}" class="btn-primary">Volver</a>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

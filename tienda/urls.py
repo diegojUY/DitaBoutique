@@ -28,6 +28,7 @@ urlpatterns = [
     path('suscribirse/', views.suscribirse, name='suscribirse'),
     path('carrito/', views.carrito_detalle, name='carrito'),
     path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
+    path('metodo-pago/<str:method>/', views.payment_method_detail, name='payment_method_detail'),
     path('carrito/agregar/<str:tipo>/<int:producto_id>/', views.agregar_al_carrito, name='agregar_al_carrito'),
     path('carrito/eliminar/<str:tipo>/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('terminos-condiciones/', views.placeholder, name='terminos_condiciones'),
