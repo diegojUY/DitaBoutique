@@ -172,13 +172,15 @@ def finalizar_compra(request):
         cart = Cart(request)
         cart.clear()
 
-    return render(request, 'carrito.html', {
-        'cart_items': checkout_items,
-        'total_carrito': float(total_carrito),
-        'checkout_modal_open': True,
-        'checkout_unidades': checkout_unidades,
-        'compra': compra,
-    })
+    return redirect(reverse('checkout_orden', args=[compra.numero_orden]))
+
+
+def checkout_orden(request, numero_orden):
+    if not request.user.is_authenticated:
+        login_url = f"{reverse('login')}?next={request.get_full_path()}"
+        return redirect(login_url)
+    compra = get_object_or_404(Adquirido, numero_orden=numero_orden, user=request.user)
+    return render(request, 'finalizar_compra.html', {'compra': compra})
 
 
 def payment_method_detail(request, method):

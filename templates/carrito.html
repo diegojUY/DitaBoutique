@@ -58,7 +58,7 @@
           <strong>Total a pagar: ${{ total_carrito }}</strong>
         </div>
         {% if cart_items and not checkout_modal_open %}
-          <form method="post" action="{% url 'finalizar_compra' %}">
+          <form method="post" action="{% url 'finalizar_compra' %}" target="_blank" id="checkout-form">
             {% csrf_token %}
             <button type="submit" class="btn-primary">Proceder al pago</button>
           </form>
@@ -103,6 +103,19 @@
 
 {% block extra_js %}
   {{ block.super }}
+  {% if not checkout_modal_open %}
+    <script>
+      (function () {
+        var form = document.getElementById('checkout-form');
+        if (!form) { return; }
+        form.addEventListener('submit', function () {
+          setTimeout(function () {
+            window.location.href = "{% url 'carrito' %}";
+          }, 600);
+        });
+      })();
+    </script>
+  {% endif %}
   {% if checkout_modal_open %}
     <script>
       (function () {
