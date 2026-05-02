@@ -15,6 +15,10 @@
         <p><strong>Usuario:</strong> {{ request.user.username }}</p>
         <p><strong>Total:</strong> ${{ compra.total }}</p>
       </div>
+      <div class="checkout-contact-actions">
+        <a href="https://wa.me/59897039384" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">Contactar por WhatsApp</a>
+        <p>Si querés confirmar disponibilidad o coordinar el pago, escribinos al +598 097039384.</p>
+      </div>
       <div class="checkout-info">
         <p>Aceptamos los siguientes métodos de pago:</p>
         {% include 'includes/payment_methods.html' %}

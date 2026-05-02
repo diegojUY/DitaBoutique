@@ -296,6 +296,7 @@
   display: grid;
   gap: 10px;
   margin-top: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .payment-methods-block {
@@ -303,23 +304,45 @@
 }
 
 .payment-method__button {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   width: 100%;
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid rgba(193, 167, 98, 0.28);
   border-radius: var(--radius-sm);
-  background: #fff;
-  padding: 15px 16px;
+  background: linear-gradient(135deg, #fff8ec 0%, #ffffff 100%);
+  padding: 16px 18px;
   text-align: left;
   font-weight: 700;
   color: var(--color-dark);
   cursor: pointer;
-  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition), background var(--transition);
+}
+
+.payment-method__button span {
+  font-size: 14px;
+  letter-spacing: .03em;
+}
+
+.payment-method__button small {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.55);
 }
 
 .payment-method__button:hover {
-  border-color: rgba(0,0,0,0.24);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-  transform: translateY(-1px);
+  border-color: rgba(193, 167, 98, 0.7);
+  background: linear-gradient(135deg, #fff2d7 0%, #ffffff 100%);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.09);
+  transform: translateY(-2px);
+}
+
+.payment-method__button:focus-visible {
+  outline: 2px solid rgba(193, 167, 98, 0.65);
+  outline-offset: 2px;
 }
 
 .payment-method-card {
@@ -407,6 +430,25 @@
   margin-top: 20px;
 }
 
+.checkout-contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 0 0 18px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  background: #fff8ec;
+  border: 1px solid rgba(193, 167, 98, 0.2);
+}
+
+.checkout-contact-actions p {
+  margin: 0;
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
 .btn-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -420,13 +462,21 @@
   font-weight: 700;
   letter-spacing: .05em;
   font-size: 12px;
+  box-shadow: 0 12px 24px rgba(37, 211, 102, 0.22);
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
 }
 
 .btn-whatsapp:hover {
-  opacity: .92;
+  opacity: .96;
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(37, 211, 102, 0.28);
 }
 
 @media (max-width: 820px) {
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+
   .cart-table {
     min-width: 100%;
   }
