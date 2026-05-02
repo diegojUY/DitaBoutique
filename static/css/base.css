@@ -298,7 +298,12 @@
   margin-top: 14px;
 }
 
+.payment-methods-block {
+  position: relative;
+}
+
 .payment-method__button {
+  display: block;
   width: 100%;
   border: 1px solid rgba(0,0,0,0.12);
   border-radius: var(--radius-sm);
@@ -315,6 +320,52 @@
   border-color: rgba(0,0,0,0.24);
   box-shadow: 0 8px 22px rgba(0,0,0,0.06);
   transform: translateY(-1px);
+}
+
+.payment-method-card {
+  margin-top: 14px;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: 0 16px 34px rgba(0,0,0,0.08);
+  padding: 22px 18px 16px;
+}
+
+.payment-method-card__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  color: var(--color-dark);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.payment-method-card__close:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.payment-method-card__content h3 {
+  margin: 0 0 12px;
+  font-size: 21px;
+  color: var(--color-dark);
+}
+
+.payment-method-card__content p {
+  margin: 0 0 8px;
+  color: var(--color-gray);
+  line-height: 1.6;
+}
+
+.payment-method-card__content p:last-child {
+  margin-bottom: 0;
 }
 
 .payment-detail-view {

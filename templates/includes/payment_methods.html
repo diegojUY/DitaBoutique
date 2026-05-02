@@ -1,7 +1,76 @@
-<div class="payment-methods">
-  <a class="payment-method__button" href="{% url 'payment_method_detail' 'transferencia' %}?next={{ request.path|urlencode }}">Transferencia bancaria</a>
-  <a class="payment-method__button" href="{% url 'payment_method_detail' 'deposito' %}?next={{ request.path|urlencode }}">Depósito</a>
-  <a class="payment-method__button" href="{% url 'payment_method_detail' 'efectivo' %}?next={{ request.path|urlencode }}">Efectivo al coordinar envío</a>
-  <a class="payment-method__button" href="{% url 'payment_method_detail' 'abitab' %}?next={{ request.path|urlencode }}">Giro por Abitab</a>
-  <a class="payment-method__button" href="{% url 'payment_method_detail' 'redpagos' %}?next={{ request.path|urlencode }}">RedPagos</a>
+<div class="payment-methods-block" id="payment-methods-block">
+  <div class="payment-methods">
+    <button type="button" class="payment-method__button" data-payment-target="transferencia">Transferencia bancaria</button>
+    <button type="button" class="payment-method__button" data-payment-target="deposito">Depósito</button>
+    <button type="button" class="payment-method__button" data-payment-target="efectivo">Efectivo al coordinar envío</button>
+    <button type="button" class="payment-method__button" data-payment-target="abitab">Giro por Abitab</button>
+    <button type="button" class="payment-method__button" data-payment-target="redpagos">RedPagos</button>
+  </div>
+
+  <div class="payment-method-card" id="payment-method-card" hidden>
+    <button type="button" class="payment-method-card__close" id="payment-method-card-close" aria-label="Cerrar información de pago">&times;</button>
+    <div class="payment-method-card__body">
+      <article class="payment-method-card__content" data-payment-card="transferencia" hidden>
+        {% include 'includes/transferencia_bancaria.html' %}
+      </article>
+      <article class="payment-method-card__content" data-payment-card="deposito" hidden>
+        {% include 'includes/depositos.html' %}
+      </article>
+      <article class="payment-method-card__content" data-payment-card="efectivo" hidden>
+        {% include 'includes/efectivo.html' %}
+      </article>
+      <article class="payment-method-card__content" data-payment-card="abitab" hidden>
+        {% include 'includes/giro_abitab.html' %}
+      </article>
+      <article class="payment-method-card__content" data-payment-card="redpagos" hidden>
+        {% include 'includes/redpagos.html' %}
+      </article>
+    </div>
+  </div>
 </div>
+
+<script>
+  (function () {
+    var block = document.getElementById('payment-methods-block');
+    if (!block) {
+      return;
+    }
+
+    var buttons = block.querySelectorAll('.payment-method__button');
+    var card = block.querySelector('#payment-method-card');
+    var closeButton = block.querySelector('#payment-method-card-close');
+    var contents = block.querySelectorAll('.payment-method-card__content');
+
+    var openCard = function (target) {
+      var active = block.querySelector('[data-payment-card="' + target + '"]');
+      if (!card || !active) {
+        return;
+      }
+
+      contents.forEach(function (item) {
+        item.hidden = item !== active;
+      });
+      card.hidden = false;
+    };
+
+    var closeCard = function () {
+      if (!card) {
+        return;
+      }
+      card.hidden = true;
+      contents.forEach(function (item) {
+        item.hidden = true;
+      });
+    };
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        openCard(button.getAttribute('data-payment-target'));
+      });
+    });
+
+    if (closeButton) {
+      closeButton.addEventListener('click', closeCard);
+    }
+  })();
+</script>
