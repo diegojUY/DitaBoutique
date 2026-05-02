@@ -90,17 +90,12 @@
             </div>
             <div class="checkout-info">
               <p>Aceptamos los siguientes métodos de pago:</p>
-              <ul>
-                {% for method in payment_methods %}
-                  <li>{{ method }}</li>
-                {% endfor %}
-              </ul>
+              {% include 'includes/payment_methods.html' %}
             </div>
           {% endif %}
 
           <div class="checkout-modal__actions">
             <a href="https://api.whatsapp.com/send?text=Hola%20DitaBoutique%2C%20necesito%20ayuda%20con%20mi%20compra" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">Contactar por WhatsApp</a>
-            <a href="{% url 'carrito' %}" class="btn-primary">Cerrar</a>
           </div>
         </div>
       </div>
