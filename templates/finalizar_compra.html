@@ -8,20 +8,45 @@
     <div class="login-card cart-card">
       <div class="login-card__header">
         <h1>Proceder al pago</h1>
-        <p>Abriste esta página en una nueva pestaña para revisar los métodos de pago sin cerrar el carrito.</p>
+        <p>Revisá tu carrito y elegí tu método de pago para finalizar tu compra.</p>
       </div>
       {% if cart_empty %}
         <p class="checkout-error">Su carrito está vacío</p>
       {% else %}
         <div class="checkout-info">
           <p>Aceptamos los siguientes métodos de pago:</p>
-          <ul>
-            <li>Transferencia bancaria</li>
-            <li>Depósito</li>
-            <li>Efectivo al coordinar envío</li>
-            <li>Giro por Abitab</li>
-            <li>RedPagos</li>
-          </ul>
+          <div class="payment-methods">
+            <details class="payment-method" open>
+              <summary>Transferencia bancaria</summary>
+              <p>
+                BROU: 110794545-00001<br>
+                Desde otros bancos: 11079454500001<br>
+                Tatiana Alvarez<br>
+                PREX: 391372 Tatiana Alvarez<br>
+                OCABLUE: 6273135 Diego Jorge
+              </p>
+            </details>
+
+            <details class="payment-method">
+              <summary>Depósito</summary>
+              <p>Podés depositar en cuenta BROU y enviarnos el comprobante para validar tu pago.</p>
+            </details>
+
+            <details class="payment-method">
+              <summary>Efectivo al coordinar envío</summary>
+              <p>Coordinamos contigo el envío y abonás en efectivo al momento de la entrega.</p>
+            </details>
+
+            <details class="payment-method">
+              <summary>Giro por Abitab</summary>
+              <p>Te compartimos los datos de destinatario por WhatsApp cuando confirmes este método.</p>
+            </details>
+
+            <details class="payment-method">
+              <summary>RedPagos</summary>
+              <p>Al seleccionar este método, te enviamos por WhatsApp los datos para hacer el giro.</p>
+            </details>
+          </div>
         </div>
       {% endif %}
     </div>
