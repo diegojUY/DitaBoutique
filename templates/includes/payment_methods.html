@@ -1,7 +1,7 @@
 <div class="payment-methods">
   <div class="payment-method">
     <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Transferencia bancaria">
+      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Transferencia bancaria" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
         <span class="payment-method__chevron">&#9654;</span>
       </button>
       <span class="payment-method__title">Transferencia bancaria</span>
@@ -19,7 +19,7 @@
 
   <div class="payment-method">
     <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Depósito">
+      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Depósito" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
         <span class="payment-method__chevron">&#9654;</span>
       </button>
       <span class="payment-method__title">Depósito</span>
@@ -31,7 +31,7 @@
 
   <div class="payment-method">
     <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Efectivo al coordinar envío">
+      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Efectivo al coordinar envío" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
         <span class="payment-method__chevron">&#9654;</span>
       </button>
       <span class="payment-method__title">Efectivo al coordinar envío</span>
@@ -43,7 +43,7 @@
 
   <div class="payment-method">
     <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Giro por Abitab">
+      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar Giro por Abitab" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
         <span class="payment-method__chevron">&#9654;</span>
       </button>
       <span class="payment-method__title">Giro por Abitab</span>
@@ -55,7 +55,7 @@
 
   <div class="payment-method">
     <div class="payment-method__header">
-      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar RedPagos">
+      <button type="button" class="payment-method__toggle" aria-expanded="false" aria-label="Desplegar RedPagos" onclick="const method=this.closest('div.payment-method'); const content=method.querySelector('.payment-method__content'); const isOpen=method.classList.toggle('is-open'); this.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); content.hidden=!isOpen;">
         <span class="payment-method__chevron">&#9654;</span>
       </button>
       <span class="payment-method__title">RedPagos</span>
