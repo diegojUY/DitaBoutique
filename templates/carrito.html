@@ -74,6 +74,7 @@
       <div class="checkout-modal" id="checkout-modal" data-close-url="{% url 'carrito' %}" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
         <div class="checkout-modal__backdrop" id="checkout-modal-backdrop"></div>
         <div class="checkout-modal__card login-card cart-card checkout-card">
+          <a href="{% url 'carrito' %}" class="checkout-modal__close" aria-label="Cerrar tarjeta de pago">&times;</a>
           <div class="login-card__header">
             <h1 id="checkout-title">Información de pago</h1>
             <p>Tu orden fue creada correctamente. Te dejamos los métodos para completar el pago.</p>
@@ -98,6 +99,7 @@
           {% endif %}
 
           <div class="checkout-modal__actions">
+            <a href="https://api.whatsapp.com/send?text=Hola%20DitaBoutique%2C%20necesito%20ayuda%20con%20mi%20compra" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">Contactar por WhatsApp</a>
             <a href="{% url 'carrito' %}" class="btn-primary">Cerrar</a>
           </div>
         </div>
