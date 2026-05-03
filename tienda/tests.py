@@ -65,8 +65,33 @@ class TiendaSmokeTests(TestCase):
         compra = OrdenCompra.objects.get(user=user)
         self.assertTrue(compra.numero_orden.startswith('OC-'))
         self.assertEqual(compra.total, 200)
+        self.assertEqual(compra.estado_orden, 'pendiente')
+        self.assertEqual(compra.metodo_pago, '')
         self.assertEqual(compra.items.count(), 1)
         self.assertEqual(compra.items.first().nombre_producto, 'Aro')
 
         producto.refresh_from_db()
         self.assertEqual(producto.cantidad, 3)
+
+    def test_actualizar_metodo_pago_guarda_en_orden(self):
+        user = User.objects.create_user(username='cliente2', password='123456')
+        self.client.login(username='cliente2', password='123456')
+
+        compra = OrdenCompra.objects.create(
+            user=user,
+            nombre='Cliente Dos',
+            domicilio='Calle 1',
+            ciudad='Montevideo',
+            estado='Montevideo',
+            pais='Uruguay',
+            total='150.00',
+        )
+
+        response = self.client.post(
+            reverse('actualizar_metodo_pago', args=[compra.numero_orden]),
+            {'method': 'transferencia'},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        compra.refresh_from_db()
+        self.assertEqual(compra.metodo_pago, 'transferencia')

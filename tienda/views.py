@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from decimal import Decimal
 from django.db import transaction
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import TemplateDoesNotExist
 from django.urls import reverse
@@ -216,6 +216,30 @@ def checkout_orden(request, numero_orden):
         return redirect(login_url)
     compra = get_object_or_404(OrdenCompra.objects.prefetch_related('items'), numero_orden=numero_orden, user=request.user)
     return render(request, 'finalizar_compra.html', {'compra': compra})
+
+
+def actualizar_metodo_pago(request, numero_orden):
+    if not request.user.is_authenticated:
+        return JsonResponse({'ok': False, 'error': 'Autenticacion requerida.'}, status=401)
+
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'Metodo no permitido.'}, status=405)
+
+    compra = get_object_or_404(OrdenCompra, numero_orden=numero_orden, user=request.user)
+    method = request.POST.get('method', '').strip()
+    valid_methods = {'transferencia', 'efectivo', 'giros', 'deposito'}
+    if method not in valid_methods:
+        return JsonResponse({'ok': False, 'error': 'Metodo de pago invalido.'}, status=400)
+
+    compra.metodo_pago = method
+    compra.save(update_fields=['metodo_pago'])
+    return JsonResponse({
+        'ok': True,
+        'metodo_pago': compra.metodo_pago,
+        'metodo_pago_label': compra.get_metodo_pago_display(),
+        'estado_orden': compra.estado_orden,
+        'estado_orden_label': compra.get_estado_orden_display(),
+    })
 
 
 def payment_method_detail(request, method):

@@ -14,6 +14,8 @@
           <div class="purchase-item">
             <h2>Orden {{ compra.numero_orden }}</h2>
             <p><strong>Fecha:</strong> {{ compra.created_at|date:'d M Y H:i' }}</p>
+            <p><strong>Estado:</strong> {{ compra.get_estado_orden_display }}</p>
+            <p><strong>Método de pago:</strong> {{ compra.get_metodo_pago_display }}</p>
             <p><strong>Cliente:</strong> {{ compra.nombre }}</p>
             <p><strong>Dirección:</strong> {{ compra.domicilio }}, {{ compra.ciudad }}, {{ compra.estado }}, {{ compra.pais }}</p>
             <p><strong>Total:</strong> ${{ compra.total }}</p>

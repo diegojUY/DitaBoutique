@@ -4,6 +4,20 @@ from django.utils import timezone
 
 # Create your models here.
 
+ESTADO_ORDEN_CHOICES = [
+    ('pendiente', 'Pendiente de pago'),
+    ('pagada', 'Pagada'),
+    ('cancelada', 'Cancelada'),
+]
+
+METODO_PAGO_CHOICES = [
+    ('', 'Sin seleccionar'),
+    ('transferencia', 'Transferencia bancaria'),
+    ('efectivo', 'Efectivo al coordinar envio'),
+    ('giros', 'Giros'),
+    ('deposito', 'Deposito'),
+]
+
 
 class OrdenCompra(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ordenes_compra')
@@ -13,6 +27,8 @@ class OrdenCompra(models.Model):
     ciudad = models.CharField(max_length=60)
     estado = models.CharField(max_length=50)
     pais = models.CharField(max_length=50)
+    estado_orden = models.CharField(max_length=20, choices=ESTADO_ORDEN_CHOICES, default='pendiente')
+    metodo_pago = models.CharField(max_length=20, choices=METODO_PAGO_CHOICES, blank=True, default='')
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(default=timezone.now)
 

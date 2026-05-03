@@ -14,6 +14,8 @@
         <p><strong>Número de orden:</strong> {{ compra.numero_orden }}</p>
         <p><strong>Usuario:</strong> {{ request.user.username }}</p>
         <p><strong>Total:</strong> ${{ compra.total }}</p>
+        <p><strong>Estado:</strong> <span id="checkout-order-status">{{ compra.get_estado_orden_display }}</span></p>
+        <p><strong>Método de pago:</strong> <span id="checkout-payment-method">{{ compra.get_metodo_pago_display }}</span></p>
       </div>
       <div class="checkout-contact-actions">
         <a href="https://wa.me/59897039384" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">Contactar por WhatsApp</a>
@@ -21,6 +23,7 @@
       </div>
       <div class="checkout-info">
         <p>Aceptamos los siguientes métodos de pago:</p>
+        <p class="checkout-info__hint">Al elegir uno, queda guardado automáticamente en tu orden y en tu perfil.</p>
         {% include 'includes/payment_methods.html' %}
       </div>
     </div>

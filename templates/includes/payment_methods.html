@@ -1,22 +1,24 @@
-<div class="payment-methods-block">
+<div class="payment-methods-block" data-update-url="{% url 'actualizar_metodo_pago' compra.numero_orden %}">
   <div class="payment-methods">
-    <button type="button" class="payment-method__button" data-payment-target="transferencia">
+    <button type="button" class="payment-method__button{% if compra.metodo_pago == 'transferencia' %} payment-method__button--selected{% endif %}" data-payment-target="transferencia" data-payment-method="transferencia">
       <span>Transferencia bancaria</span>
       <small>Ver datos de cuenta</small>
     </button>
-    <button type="button" class="payment-method__button" data-payment-target="efectivo">
+    <button type="button" class="payment-method__button{% if compra.metodo_pago == 'efectivo' %} payment-method__button--selected{% endif %}" data-payment-target="efectivo" data-payment-method="efectivo">
       <span>Efectivo al coordinar envío</span>
       <small>Pago al momento de entrega</small>
     </button>
-    <button type="button" class="payment-method__button" data-payment-target="giros">
+    <button type="button" class="payment-method__button{% if compra.metodo_pago == 'giros' %} payment-method__button--selected{% endif %}" data-payment-target="giros" data-payment-method="giros">
       <span>Giros</span>
       <small>Opciones Abitab y RedPagos</small>
     </button>
-    <button type="button" class="payment-method__button" data-payment-target="deposito">
+    <button type="button" class="payment-method__button{% if compra.metodo_pago == 'deposito' %} payment-method__button--selected{% endif %}" data-payment-target="deposito" data-payment-method="deposito">
       <span>Depósitos</span>
       <small>Confirmación con comprobante</small>
     </button>
   </div>
+
+  <p class="payment-methods-feedback" hidden></p>
 
   <div class="payment-method-card" hidden>
     <button type="button" class="payment-method-card__close" aria-label="Cerrar información de pago">&times;</button>
@@ -49,6 +51,10 @@
       var card = block.querySelector('.payment-method-card');
       var closeButton = block.querySelector('.payment-method-card__close');
       var contents = block.querySelectorAll('.payment-method-card__content');
+      var feedback = block.querySelector('.payment-methods-feedback');
+      var updateUrl = block.getAttribute('data-update-url');
+      var paymentMethodLabel = document.getElementById('checkout-payment-method');
+      var orderStatusLabel = document.getElementById('checkout-order-status');
 
       var openCard = function (target) {
         var active = block.querySelector('[data-payment-card="' + target + '"]');
@@ -72,9 +78,56 @@
         });
       };
 
+      var persistMethod = function (button) {
+        if (!updateUrl || typeof window.getCsrfToken !== 'function') {
+          return;
+        }
+
+        var payload = new URLSearchParams();
+        payload.append('method', button.getAttribute('data-payment-method'));
+
+        fetch(updateUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'X-CSRFToken': window.getCsrfToken(),
+          },
+          body: payload.toString(),
+        })
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error('No se pudo guardar el metodo de pago.');
+            }
+            return response.json();
+          })
+          .then(function (data) {
+            buttons.forEach(function (item) {
+              item.classList.toggle('payment-method__button--selected', item === button);
+            });
+
+            if (paymentMethodLabel) {
+              paymentMethodLabel.textContent = data.metodo_pago_label;
+            }
+            if (orderStatusLabel) {
+              orderStatusLabel.textContent = data.estado_orden_label;
+            }
+            if (feedback) {
+              feedback.hidden = false;
+              feedback.textContent = 'Metodo guardado: ' + data.metodo_pago_label + '.';
+            }
+          })
+          .catch(function (error) {
+            if (feedback) {
+              feedback.hidden = false;
+              feedback.textContent = error.message;
+            }
+          });
+      };
+
       buttons.forEach(function (button) {
         button.addEventListener('click', function () {
           openCard(button.getAttribute('data-payment-target'));
+          persistMethod(button);
         });
       });
 
