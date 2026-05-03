@@ -62,6 +62,38 @@
         <a href="?edit=1" class="page-card__button page-card__button--secondary">Editar</a>
       </div>
     {% endif %}
+
+    <div class="profile-orders-block">
+      <div class="profile-orders-block__header">
+        <h2>Órdenes de compra</h2>
+        <a href="{% url 'mis_compras' %}" class="page-card__button page-card__button--secondary">Ver todas</a>
+      </div>
+
+      {% if ordenes_recientes %}
+        <div class="page-card__list">
+          {% for orden in ordenes_recientes %}
+            <div class="purchase-item">
+              <h3>Orden {{ orden.numero_orden }}</h3>
+              <p><strong>Fecha:</strong> {{ orden.created_at|date:'d M Y H:i' }}</p>
+              <p><strong>Total:</strong> ${{ orden.total }}</p>
+              <p><strong>Productos:</strong></p>
+              <ul>
+                {% for item in orden.items.all %}
+                  <li>{{ item.nombre_producto }} x{{ item.cantidad }} - ${{ item.subtotal }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="page-card__list">
+          <div>
+            <h3>No hay órdenes registradas</h3>
+            <p>Cuando completes una compra, aparecerá aquí el detalle de tu orden.</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
   </section>
 </div>
 {% endblock %}

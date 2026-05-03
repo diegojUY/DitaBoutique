@@ -12,13 +12,18 @@
       <div class="page-card__list">
         {% for compra in compras %}
           <div class="purchase-item">
-            <h2>Compra del {{ compra.created_at|date:'d M Y H:i' }}</h2>
+            <h2>Orden {{ compra.numero_orden }}</h2>
+            <p><strong>Fecha:</strong> {{ compra.created_at|date:'d M Y H:i' }}</p>
             <p><strong>Cliente:</strong> {{ compra.nombre }}</p>
             <p><strong>Dirección:</strong> {{ compra.domicilio }}, {{ compra.ciudad }}, {{ compra.estado }}, {{ compra.pais }}</p>
             <p><strong>Total:</strong> ${{ compra.total }}</p>
-            {% if compra.productos %}
+            {% if compra.items.all %}
               <p><strong>Productos:</strong></p>
-              <p>{{ compra.productos }}</p>
+              <ul>
+                {% for item in compra.items.all %}
+                  <li>{{ item.nombre_producto }} x{{ item.cantidad }} - ${{ item.subtotal }}</li>
+                {% endfor %}
+              </ul>
             {% else %}
               <p><em>Detalle de productos no disponible.</em></p>
             {% endif %}

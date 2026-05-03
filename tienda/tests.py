@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Adquirido, Producto
+from .models import Adquirido, OrdenCompra, Producto
 
 
 class TiendaSmokeTests(TestCase):
@@ -58,13 +58,15 @@ class TiendaSmokeTests(TestCase):
 
         response = self.client.post(reverse('finalizar_compra'))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'carrito.html')
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(Adquirido.objects.filter(user=user).count(), 1)
+        self.assertEqual(OrdenCompra.objects.filter(user=user).count(), 1)
 
-        compra = Adquirido.objects.get(user=user)
+        compra = OrdenCompra.objects.get(user=user)
         self.assertTrue(compra.numero_orden.startswith('OC-'))
         self.assertEqual(compra.total, 200)
+        self.assertEqual(compra.items.count(), 1)
+        self.assertEqual(compra.items.first().nombre_producto, 'Aro')
 
         producto.refresh_from_db()
         self.assertEqual(producto.cantidad, 3)

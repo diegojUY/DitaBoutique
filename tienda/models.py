@@ -4,6 +4,59 @@ from django.utils import timezone
 
 # Create your models here.
 
+
+class OrdenCompra(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ordenes_compra')
+    numero_orden = models.CharField(max_length=24, unique=True, null=True, blank=True, db_index=True)
+    nombre = models.CharField(max_length=30)
+    domicilio = models.CharField(max_length=50)
+    ciudad = models.CharField(max_length=60)
+    estado = models.CharField(max_length=50)
+    pais = models.CharField(max_length=50)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'orden de compra'
+        verbose_name_plural = 'ordenes de compra'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.numero_orden and self.pk:
+            numero = f"OC-{self.created_at:%Y%m%d}-{self.pk:06d}"
+            OrdenCompra.objects.filter(pk=self.pk).update(numero_orden=numero)
+            self.numero_orden = numero
+
+    @property
+    def productos_resumen(self):
+        return [
+            f"{item.nombre_producto} x{item.cantidad} - ${item.subtotal}"
+            for item in self.items.all()
+        ]
+
+    def __str__(self):
+        return self.numero_orden or f"Orden #{self.pk}"
+
+
+class OrdenCompraItem(models.Model):
+    orden = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE, related_name='items')
+    producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes_items')
+    joya = models.ForeignKey('Joya', on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes_items')
+    nombre_producto = models.CharField(max_length=120)
+    tipo_producto = models.CharField(max_length=20, default='producto')
+    cantidad = models.PositiveIntegerField(default=1)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'item de orden de compra'
+        verbose_name_plural = 'items de orden de compra'
+
+    def __str__(self):
+        return f"{self.nombre_producto} x{self.cantidad}"
+
 class Adquirido(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='adquiridos')
     numero_orden = models.CharField(max_length=24, unique=True, null=True, blank=True, db_index=True)

@@ -12,7 +12,7 @@ from django.views.generic import TemplateView
 from urllib.parse import quote
 
 from .cart import Cart
-from .models import Adquirido, Producto, Joya, Subscriber, UserProfile
+from .models import Adquirido, OrdenCompra, OrdenCompraItem, Producto, Joya, Subscriber, UserProfile
 
 
 PAYMENT_METHODS = {
@@ -136,16 +136,51 @@ def finalizar_compra(request):
 
     total_carrito = Decimal('0.00')
     productos_detalle = []
+    items_orden = []
     for item in checkout_items.values():
         cantidad = int(item.get('cantidad', 1))
         precio = Decimal(str(item.get('precio', '0')))
         subtotal = precio * cantidad
         total_carrito += subtotal
         productos_detalle.append(f"{item.get('nombre', 'Producto')} x{cantidad} - ${subtotal}")
+        items_orden.append({
+            'nombre_producto': item.get('nombre', 'Producto'),
+            'tipo_producto': item.get('tipo', 'producto'),
+            'cantidad': cantidad,
+            'precio_unitario': precio,
+            'subtotal': subtotal,
+            'product_id': item.get('product_id'),
+        })
 
     with transaction.atomic():
-        compra = Adquirido.objects.create(
+        compra = OrdenCompra.objects.create(
             user=request.user,
+            nombre=customer_name[:30],
+            domicilio=domicilio[:50],
+            ciudad=ciudad[:60],
+            estado=estado[:50],
+            pais='Uruguay',
+            total=total_carrito,
+        )
+
+        for item_data in items_orden:
+            item_payload = {
+                'orden': compra,
+                'nombre_producto': item_data['nombre_producto'][:120],
+                'tipo_producto': item_data['tipo_producto'],
+                'cantidad': item_data['cantidad'],
+                'precio_unitario': item_data['precio_unitario'],
+                'subtotal': item_data['subtotal'],
+            }
+            if item_data['tipo_producto'] == 'joya':
+                item_payload['joya_id'] = item_data['product_id']
+            else:
+                item_payload['producto_id'] = item_data['product_id']
+            OrdenCompraItem.objects.create(**item_payload)
+
+        Adquirido.objects.create(
+            user=request.user,
+            numero_orden=compra.numero_orden,
             nombre=customer_name[:30],
             domicilio=domicilio[:50],
             ciudad=ciudad[:60],
@@ -179,7 +214,7 @@ def checkout_orden(request, numero_orden):
     if not request.user.is_authenticated:
         login_url = f"{reverse('login')}?next={request.get_full_path()}"
         return redirect(login_url)
-    compra = get_object_or_404(Adquirido, numero_orden=numero_orden, user=request.user)
+    compra = get_object_or_404(OrdenCompra.objects.prefetch_related('items'), numero_orden=numero_orden, user=request.user)
     return render(request, 'finalizar_compra.html', {'compra': compra})
 
 
@@ -302,6 +337,7 @@ def mi_cuenta(request):
         'profile': profile,
         'is_edit_mode': is_edit_mode,
         'has_saved_data': has_saved_data,
+        'ordenes_recientes': OrdenCompra.objects.filter(user=request.user).prefetch_related('items')[:3],
         'user': request.user,
     })
 
@@ -310,7 +346,7 @@ def mis_compras(request):
     if not request.user.is_authenticated:
         return redirect(f"{reverse('ingresar')}?next={reverse('mis_compras')}")
 
-    compras = Adquirido.objects.filter(user=request.user).order_by('-created_at')
+    compras = OrdenCompra.objects.filter(user=request.user).prefetch_related('items')
     return render(request, 'mis_compras.html', {
         'page_title': 'Mis Compras',
         'compras': compras,
