@@ -29,6 +29,7 @@ class OrdenCompra(models.Model):
     pais = models.CharField(max_length=50)
     estado_orden = models.CharField(max_length=20, choices=ESTADO_ORDEN_CHOICES, default='pendiente')
     metodo_pago = models.CharField(max_length=20, choices=METODO_PAGO_CHOICES, blank=True, default='')
+    pago_notificado = models.BooleanField(default=False)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -50,6 +51,14 @@ class OrdenCompra(models.Model):
             f"{item.nombre_producto} x{item.cantidad} - ${item.subtotal}"
             for item in self.items.all()
         ]
+
+    @property
+    def estado_badge_class(self):
+        return {
+            'pendiente': 'order-status order-status--pending',
+            'pagada': 'order-status order-status--paid',
+            'cancelada': 'order-status order-status--cancelled',
+        }.get(self.estado_orden, 'order-status')
 
     def __str__(self):
         return self.numero_orden or f"Orden #{self.pk}"

@@ -1,6 +1,9 @@
 from django.test import TestCase
+from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 from django.urls import reverse
+from unittest.mock import patch
+from .admin import OrdenCompraAdmin
 from .models import Adquirido, OrdenCompra, Producto
 
 
@@ -67,6 +70,7 @@ class TiendaSmokeTests(TestCase):
         self.assertEqual(compra.total, 200)
         self.assertEqual(compra.estado_orden, 'pendiente')
         self.assertEqual(compra.metodo_pago, '')
+        self.assertFalse(compra.pago_notificado)
         self.assertEqual(compra.items.count(), 1)
         self.assertEqual(compra.items.first().nombre_producto, 'Aro')
 
@@ -95,3 +99,24 @@ class TiendaSmokeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         compra.refresh_from_db()
         self.assertEqual(compra.metodo_pago, 'transferencia')
+
+    @patch('tienda.admin.send_mail', return_value=1)
+    def test_admin_notifica_pago_confirmado_una_vez(self, mock_send_mail):
+        user = User.objects.create_user(username='cliente3', password='123456', email='cliente3@example.com')
+        compra = OrdenCompra.objects.create(
+            user=user,
+            nombre='Cliente Tres',
+            domicilio='Calle 2',
+            ciudad='Montevideo',
+            estado='Montevideo',
+            pais='Uruguay',
+            total='250.00',
+        )
+
+        admin_instance = OrdenCompraAdmin(OrdenCompra, AdminSite())
+        compra.estado_orden = 'pagada'
+        admin_instance.notificar_pago_si_corresponde(None, compra, 'pendiente')
+
+        compra.refresh_from_db()
+        self.assertTrue(compra.pago_notificado)
+        self.assertEqual(mock_send_mail.call_count, 1)

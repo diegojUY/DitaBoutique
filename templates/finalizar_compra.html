@@ -14,7 +14,7 @@
         <p><strong>Número de orden:</strong> {{ compra.numero_orden }}</p>
         <p><strong>Usuario:</strong> {{ request.user.username }}</p>
         <p><strong>Total:</strong> ${{ compra.total }}</p>
-        <p><strong>Estado:</strong> <span id="checkout-order-status">{{ compra.get_estado_orden_display }}</span></p>
+        <p><strong>Estado:</strong> <span id="checkout-order-status" class="{{ compra.estado_badge_class }}">{{ compra.get_estado_orden_display }}</span></p>
         <p><strong>Método de pago:</strong> <span id="checkout-payment-method">{{ compra.get_metodo_pago_display }}</span></p>
       </div>
       <div class="checkout-contact-actions">

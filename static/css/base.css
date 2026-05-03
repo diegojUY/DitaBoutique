@@ -287,6 +287,32 @@
   margin-bottom: 0;
 }
 
+.order-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.order-status--pending {
+  background: #fff3cd;
+  color: #7a5d00;
+}
+
+.order-status--paid {
+  background: #daf5e7;
+  color: #13653f;
+}
+
+.order-status--cancelled {
+  background: #fde0e0;
+  color: #8d1f1f;
+}
+
 .checkout-info__hint {
   margin: 8px 0 0;
   color: var(--color-gray);

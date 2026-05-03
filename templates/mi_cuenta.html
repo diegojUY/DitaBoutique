@@ -75,7 +75,7 @@
             <div class="purchase-item">
               <h3>Orden {{ orden.numero_orden }}</h3>
               <p><strong>Fecha:</strong> {{ orden.created_at|date:'d M Y H:i' }}</p>
-              <p><strong>Estado:</strong> {{ orden.get_estado_orden_display }}</p>
+              <p><strong>Estado:</strong> <span class="{{ orden.estado_badge_class }}">{{ orden.get_estado_orden_display }}</span></p>
               <p><strong>Método de pago:</strong> {{ orden.get_metodo_pago_display }}</p>
               <p><strong>Total:</strong> ${{ orden.total }}</p>
               <p><strong>Productos:</strong></p>

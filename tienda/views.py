@@ -239,6 +239,7 @@ def actualizar_metodo_pago(request, numero_orden):
         'metodo_pago_label': compra.get_metodo_pago_display(),
         'estado_orden': compra.estado_orden,
         'estado_orden_label': compra.get_estado_orden_display(),
+        'estado_orden_css': compra.estado_badge_class,
     })
 
 

@@ -110,6 +110,7 @@
             }
             if (orderStatusLabel) {
               orderStatusLabel.textContent = data.estado_orden_label;
+              orderStatusLabel.className = data.estado_orden_css;
             }
             if (feedback) {
               feedback.hidden = false;
