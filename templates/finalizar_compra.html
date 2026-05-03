@@ -1,31 +1,54 @@
 {% extends 'base.html' %}
 
-{% block title %}Finalizar compra - DitaBoutique{% endblock %}
+{% block title %}Orden confirmada - DitaBoutique{% endblock %}
 
 {% block content %}
 <div class="container">
   <section class="login-panel">
     <div class="login-card cart-card">
-      <div class="login-card__header">
-        <h1>Información de pago</h1>
-        <p>Tu orden fue creada correctamente. Elegí tu método de pago para completar la compra.</p>
+
+      <div class="checkout-success-banner">
+        <span class="checkout-success-icon">✓</span>
+        <div>
+          <h1>¡Tu orden fue creada correctamente!</h1>
+          <p>Te enviamos un resumen al correo registrado en tu cuenta.</p>
+        </div>
       </div>
+
       <div class="checkout-order-data">
-        <p><strong>Número de orden:</strong> {{ compra.numero_orden }}</p>
+        <p><strong>Número de orden:</strong> <span class="checkout-order-number">{{ compra.numero_orden }}</span></p>
         <p><strong>Usuario:</strong> {{ request.user.username }}</p>
         <p><strong>Total:</strong> ${{ compra.total }}</p>
         <p><strong>Estado:</strong> <span id="checkout-order-status" class="{{ compra.estado_badge_class }}">{{ compra.get_estado_orden_display }}</span></p>
         <p><strong>Método de pago:</strong> <span id="checkout-payment-method">{{ compra.get_metodo_pago_display }}</span></p>
       </div>
+
+      <div class="checkout-next-steps">
+        <h2>Próximos pasos</h2>
+        <ol class="checkout-steps-list">
+          <li>Elegí tu método de pago en la sección de abajo.</li>
+          <li>Realizá el pago según los datos indicados.</li>
+          <li>Envianos el comprobante por WhatsApp para confirmar tu orden.</li>
+          <li>Coordinamos el envío y te avisamos cuando tu pedido esté en camino.</li>
+        </ol>
+      </div>
+
       <div class="checkout-contact-actions">
         <a href="https://wa.me/59897039384" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">Contactar por WhatsApp</a>
         <p>Si querés confirmar disponibilidad o coordinar el pago, escribinos al +598 097039384.</p>
       </div>
+
       <div class="checkout-info">
         <p>Aceptamos los siguientes métodos de pago:</p>
         <p class="checkout-info__hint">Al elegir uno, queda guardado automáticamente en tu orden y en tu perfil.</p>
         {% include 'includes/payment_methods.html' %}
       </div>
+
+      <div class="checkout-footer-actions">
+        <a href="{% url 'mis_compras' %}" class="btn-secondary">Ver mis compras</a>
+        <a href="{% url 'tienda' %}" class="card-joya__button">Seguir comprando</a>
+      </div>
+
     </div>
   </section>
 </div>

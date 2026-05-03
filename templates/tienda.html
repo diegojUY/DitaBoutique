@@ -13,11 +13,25 @@
     </div>
 
     <div class="category-filters">
-    <a href="{% url 'tienda' %}" class="{% if not selected_category %}active{% endif %}">Todos</a>
+    <a href="{% url 'tienda' %}{% if precio_min or precio_max %}?{% if precio_min %}precio_min={{ precio_min }}{% endif %}{% if precio_min and precio_max %}&{% endif %}{% if precio_max %}precio_max={{ precio_max }}{% endif %}{% endif %}" class="{% if not selected_category %}active{% endif %}">Todos</a>
     {% for code, label in category_choices %}
-      <a href="{% url 'tienda' %}?categoria={{ code }}" class="{% if selected_category == code %}active{% endif %}">{{ label }}</a>
+      <a href="{% url 'tienda' %}?categoria={{ code }}{% if precio_min %}&precio_min={{ precio_min }}{% endif %}{% if precio_max %}&precio_max={{ precio_max }}{% endif %}" class="{% if selected_category == code %}active{% endif %}">{{ label }}</a>
     {% endfor %}
     </div>
+
+    <form method="get" action="{% url 'tienda' %}" class="price-filter">
+      {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
+      <label class="price-filter__label">
+        Desde $<input type="number" name="precio_min" value="{{ precio_min }}" min="0" step="1" placeholder="Mín" class="price-filter__input">
+      </label>
+      <label class="price-filter__label">
+        Hasta $<input type="number" name="precio_max" value="{{ precio_max }}" min="0" step="1" placeholder="Máx" class="price-filter__input">
+      </label>
+      <button type="submit" class="price-filter__btn">Filtrar</button>
+      {% if precio_min or precio_max %}
+        <a href="{% url 'tienda' %}{% if selected_category %}?categoria={{ selected_category }}{% endif %}" class="price-filter__clear">Limpiar</a>
+      {% endif %}
+    </form>
   </div>
 </div>
 

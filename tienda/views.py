@@ -1,7 +1,9 @@
+from django.conf import settings as django_settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
+from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404, JsonResponse
@@ -13,6 +15,40 @@ from urllib.parse import quote
 
 from .cart import Cart
 from .models import Adquirido, OrdenCompra, OrdenCompraItem, Producto, Joya, Subscriber, UserProfile
+
+
+def _enviar_email_confirmacion(user, compra):
+    """Envía un email de confirmación de orden al cliente. Silencioso ante errores."""
+    if not user.email:
+        return
+    try:
+        lineas = [
+            f"- {item.nombre_producto} x{item.cantidad} = ${item.subtotal}"
+            for item in compra.items.all()
+        ]
+        productos_texto = '\n'.join(lineas) or 'Sin detalle disponible.'
+        asunto = f"DitaBoutique — Confirmación de orden {compra.numero_orden}"
+        cuerpo = (
+            f"Hola {compra.nombre},\n\n"
+            f"Tu orden fue registrada exitosamente en DitaBoutique.\n\n"
+            f"Número de orden: {compra.numero_orden}\n"
+            f"Fecha: {compra.created_at:%d/%m/%Y %H:%M}\n"
+            f"Total: ${compra.total}\n\n"
+            f"Productos:\n{productos_texto}\n\n"
+            f"Próximo paso:\n"
+            f"Elegí tu método de pago en el detalle de tu orden y envianos el comprobante "
+            f"por WhatsApp al +598 097039384.\n\n"
+            f"Gracias por comprar en DitaBoutique.\n"
+        )
+        send_mail(
+            asunto,
+            cuerpo,
+            django_settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+            fail_silently=True,
+        )
+    except Exception:
+        pass
 
 
 PAYMENT_METHODS = {
@@ -207,6 +243,7 @@ def finalizar_compra(request):
         cart = Cart(request)
         cart.clear()
 
+    _enviar_email_confirmacion(request.user, compra)
     return redirect(reverse('checkout_orden', args=[compra.numero_orden]))
 
 
@@ -259,8 +296,23 @@ def payment_method_detail(request, method):
 def tienda(request, categoria=None):
     products = Producto.objects.all()
     selected_category = categoria or request.GET.get('categoria')
+    precio_min = request.GET.get('precio_min', '').strip()
+    precio_max = request.GET.get('precio_max', '').strip()
+
     if selected_category:
         products = products.filter(categoria=selected_category)
+
+    if precio_min:
+        try:
+            products = products.filter(precio__gte=Decimal(precio_min))
+        except InvalidOperation:
+            precio_min = ''
+
+    if precio_max:
+        try:
+            products = products.filter(precio__lte=Decimal(precio_max))
+        except InvalidOperation:
+            precio_max = ''
 
     category_choices = [
         ('bijou', 'Bijou'),
@@ -276,6 +328,8 @@ def tienda(request, categoria=None):
         'products': products,
         'selected_category': selected_category,
         'category_choices': category_choices,
+        'precio_min': precio_min,
+        'precio_max': precio_max,
     })
 
 

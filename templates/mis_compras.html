@@ -15,6 +15,13 @@
             <h2>Orden {{ compra.numero_orden }}</h2>
             <p><strong>Fecha:</strong> {{ compra.created_at|date:'d M Y H:i' }}</p>
             <p><strong>Estado:</strong> <span class="{{ compra.estado_badge_class }}">{{ compra.get_estado_orden_display }}</span></p>
+            {% if compra.estado_orden == 'pendiente' %}
+              <p class="order-status-hint">Tu pago está pendiente de confirmación. Envianos el comprobante por WhatsApp al completar el pago.</p>
+            {% elif compra.estado_orden == 'pagada' %}
+              <p class="order-status-hint order-status-hint--ok">¡Pago confirmado! Estamos preparando tu pedido.</p>
+            {% elif compra.estado_orden == 'cancelada' %}
+              <p class="order-status-hint order-status-hint--warn">Esta orden fue cancelada. Si creés que es un error, escribinos por WhatsApp.</p>
+            {% endif %}
             <p><strong>Método de pago:</strong> {{ compra.get_metodo_pago_display }}</p>
             <p><strong>Cliente:</strong> {{ compra.nombre }}</p>
             <p><strong>Dirección:</strong> {{ compra.domicilio }}, {{ compra.ciudad }}, {{ compra.estado }}, {{ compra.pais }}</p>

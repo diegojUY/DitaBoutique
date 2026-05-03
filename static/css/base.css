@@ -2186,3 +2186,190 @@ ul  { list-style: none; }
 .checkout-open .site-footer {
   opacity: 0.8;
 }
+
+/* ── Filtro de precios en tienda ────────────────────────────── */
+.price-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 0;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  margin-top: 6px;
+}
+
+.price-filter__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.price-filter__input {
+  width: 88px;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.price-filter__input:focus {
+  border-color: var(--color-accent);
+}
+
+.price-filter__btn {
+  padding: 9px 18px;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.price-filter__btn:hover { opacity: .82; }
+
+.price-filter__clear {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-gray);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.price-filter__clear:hover { color: var(--color-dark); }
+
+/* ── Banner de éxito en checkout ────────────────────────────── */
+.checkout-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #daf5e7;
+  border: 1px solid #a8e6c2;
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+
+.checkout-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #13653f;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.checkout-success-banner h1 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  color: #0d4a2f;
+}
+
+.checkout-success-banner p {
+  margin: 0;
+  font-size: 13px;
+  color: #1a6b42;
+}
+
+.checkout-order-number {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+/* ── Próximos pasos en checkout ─────────────────────────────── */
+.checkout-next-steps {
+  margin: 18px 0;
+  padding: 16px 20px;
+  background: var(--color-light);
+  border-radius: var(--radius-md);
+}
+
+.checkout-next-steps h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.checkout-steps-list {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-dark);
+}
+
+/* ── Acciones al pie del checkout ───────────────────────────── */
+.checkout-footer-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-dark);
+  background: transparent;
+  color: var(--color-dark);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+/* ── Hints de estado de orden en mis compras ────────────────── */
+.order-status-hint {
+  margin: 4px 0 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  background: #fff3cd;
+  color: #7a5d00;
+  border-left: 3px solid #f0c040;
+}
+
+.order-status-hint--ok {
+  background: #daf5e7;
+  color: #13653f;
+  border-left-color: #34c97a;
+}
+
+.order-status-hint--warn {
+  background: #fde0e0;
+  color: #8d1f1f;
+  border-left-color: #e05555;
+}

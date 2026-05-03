@@ -1,8 +1,36 @@
+import os
+from io import BytesIO
+
 from django.contrib.auth.models import User
 from django.db import DatabaseError, models
 from django.utils import timezone
+from PIL import Image as PilImage
 
-# Create your models here.
+
+def _redimensionar_imagen(campo_imagen, max_lado=1200):
+    """Redimensiona un ImageField en disco si supera max_lado px. Opera en silencio ante errores."""
+    if not campo_imagen or not campo_imagen.name:
+        return
+    try:
+        ruta = campo_imagen.path
+    except (NotImplementedError, ValueError):
+        # Almacenamiento remoto (S3, etc.) — omitir redimensionado local
+        return
+    try:
+        img = PilImage.open(ruta)
+        if img.width <= max_lado and img.height <= max_lado:
+            return
+        fmt = (img.format or 'JPEG').upper()
+        if fmt not in ('JPEG', 'PNG', 'WEBP'):
+            fmt = 'JPEG'
+        img.thumbnail((max_lado, max_lado), PilImage.LANCZOS)
+        kwargs = {'format': fmt}
+        if fmt == 'JPEG':
+            kwargs.update({'quality': 85, 'optimize': True})
+        img.save(ruta, **kwargs)
+    except Exception:
+        pass
+
 
 ESTADO_ORDEN_CHOICES = [
     ('pendiente', 'Pendiente de pago'),
@@ -148,6 +176,10 @@ class Joya(models.Model):
     )
     descripcion = models.TextField(blank=True, default='')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        _redimensionar_imagen(self.imagen)
+
     def gallery_urls(self):
         urls = []
         if self.imagen:
@@ -171,6 +203,10 @@ class JoyaImagen(models.Model):
     class Meta:
         ordering = ['orden']
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        _redimensionar_imagen(self.imagen)
+
     def __str__(self):
         return f"Imagen de {self.joya.nombre} ({self.orden})"
 
@@ -186,6 +222,10 @@ class Producto(models.Model):
         default='enchapados',
     )
     descripcion = models.TextField(blank=True, default='')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        _redimensionar_imagen(self.portada)
 
     def gallery_urls(self):
         urls = []
@@ -210,6 +250,10 @@ class ProductoImagen(models.Model):
 
     class Meta:
         ordering = ['orden']
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        _redimensionar_imagen(self.imagen)
 
     def __str__(self):
         return f"Imagen de {self.producto.nombre} ({self.orden})"
