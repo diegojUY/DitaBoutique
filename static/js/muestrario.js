@@ -163,16 +163,20 @@ if (grid && dataElement) {
           : '<div class="gallery-item__placeholder">Sin imagen</div>';
         const editButtonHtml = p.admin_url ? `<a href="${p.admin_url}" class="card-joya__button admin-edit-button" target="_blank" rel="noopener noreferrer">Editar producto</a>` : '';
 
+        const sinStock = tipo === 'producto' && parseInt(p.cantidad, 10) === 0;
+        const badgeHtml = sinStock ? '<span class="badge-sin-stock">Sin stock</span>' : '';
+        const botonHtml = sinStock
+          ? `<span class="card-joya__button card-joya__button--disabled">Sin stock</span>`
+          : `<a href="/carrito/agregar/${tipo}/${p.id}/?next=${encodeURIComponent(window.location.pathname + window.location.search)}" class="card-joya__button">Agregar al carrito</a>`;
+
         grid.innerHTML += `
           <div class="card-joya ${tipo === 'joya' ? 'card-joya--joya' : 'card-joya--producto'}" data-product-index="${idx}">
             ${imagenHtml}
-            <h3>${p.nombre}</h3>
+            <div class="card-title-row"><h3>${p.nombre}</h3>${badgeHtml}</div>
             <p class="card-joya__price">$${p.precio}</p>
             ${p.descripcion ? `<p class="card-joya__desc">${p.descripcion}</p>` : ''}
             <div class="product-card__actions">
-              <a href="/carrito/agregar/${tipo}/${p.id}/?next=${encodeURIComponent(window.location.pathname + window.location.search)}" class="card-joya__button">
-                Agregar al carrito
-              </a>
+              ${botonHtml}
               ${editButtonHtml}
             </div>
           </div>

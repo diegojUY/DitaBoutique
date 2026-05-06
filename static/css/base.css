@@ -1924,17 +1924,29 @@ body {
 }
 
 /* Badge sin stock */
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-title-row h3 {
+  margin: 0;
+}
+
 .badge-sin-stock {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
   background: var(--color-sale);
   color: var(--color-white);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
-  padding: 5px 12px;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
-  margin-bottom: 8px;
 }
 
 .card-joya__button--disabled {

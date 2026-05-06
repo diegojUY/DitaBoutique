@@ -26,12 +26,16 @@
           {% endif %}
         </div>
         <div class="winter-card__body">
-          <h3>{{ product.nombre }}</h3>
+          <div class="card-title-row"><h3>{{ product.nombre }}</h3>{% if product.cantidad == 0 %}<span class="badge-sin-stock">Sin stock</span>{% endif %}</div>
           <p class="winter-card__price">${{ product.precio }}</p>
           <p class="winter-card__desc">{{ product.descripcion }}</p>
+          {% if product.cantidad == 0 %}
+          <span class="card-joya__button card-joya__button--disabled">Sin stock</span>
+          {% else %}
           <a href="/carrito/agregar/producto/{{ product.id }}/?next={{ request.get_full_path|urlencode }}" class="card-joya__button">
             Agregar al carrito
           </a>
+          {% endif %}
         </div>
       </article>
       {% endfor %}
