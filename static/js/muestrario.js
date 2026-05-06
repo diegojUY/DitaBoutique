@@ -73,7 +73,13 @@ if (grid && dataElement) {
     modalPrevButton.style.display = currentGalleryUrls.length > 1 ? 'block' : 'none';
     modalNextButton.style.display = currentGalleryUrls.length > 1 ? 'block' : 'none';
     modalImageCounter.style.display = currentGalleryUrls.length > 1 ? 'block' : 'none';
-    modalAddButton.href = `/carrito/agregar/${product.tipo}/${product.id}/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+    const sinStock = product.tipo === 'producto' && parseInt(product.cantidad, 10) === 0;
+    if (sinStock) {
+      modalAddButton.style.display = 'none';
+    } else {
+      modalAddButton.style.display = '';
+      modalAddButton.href = `/carrito/agregar/${product.tipo}/${product.id}/?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+    }
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
