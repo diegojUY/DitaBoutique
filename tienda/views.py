@@ -92,10 +92,14 @@ PAYMENT_METHODS = {
 def inicio(request):
     products = list(Producto.objects.all())
     joyas = list(Joya.objects.all())
+    winter_products = list(Producto.objects.filter(categoria='temporada_invierno'))
+    winter_joyas = list(Joya.objects.filter(categoria='temporada_invierno'))
 
     return render(request, 'index.html', {
         'products': products,
         'joyas': joyas,
+        'winter_products': winter_products,
+        'winter_joyas': winter_joyas,
     })
 
 

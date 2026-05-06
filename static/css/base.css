@@ -1060,6 +1060,121 @@ body {
     padding-top: 80px;
   }
 
+  .home-gallery--secondary {
+    padding-top: 56px;
+  }
+
+  .winter-showcase {
+    padding-top: 80px;
+  }
+
+  .winter-showcase__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .winter-showcase__header .eyebrow {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    font-size: 14px;
+  }
+
+  .winter-showcase__header h1 {
+    margin: 0;
+    font-size: 40px;
+    line-height: 1.05;
+    color: var(--color-black);
+  }
+
+  .winter-showcase__header p {
+    margin-top: 12px;
+    max-width: 640px;
+    color: var(--color-dark);
+  }
+
+  .winter-carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(270px, 320px);
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 8px 2px 16px;
+    margin-bottom: 8px;
+  }
+
+  .winter-carousel::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .winter-carousel::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.22);
+    border-radius: 999px;
+  }
+
+  .winter-card {
+    scroll-snap-align: start;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+  }
+
+  .winter-card__media img,
+  .winter-card__placeholder {
+    width: 100%;
+    height: 245px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .winter-card__placeholder {
+    display: grid;
+    place-items: center;
+    color: var(--color-gray);
+    background: rgba(0,0,0,0.03);
+  }
+
+  .winter-card__body {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .winter-card__body h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .winter-card__price {
+    margin: 0;
+    color: #d4af37;
+    font-weight: 800;
+  }
+
+  .winter-card__desc {
+    margin: 0;
+    color: var(--color-gray);
+    line-height: 1.5;
+    min-height: 42px;
+  }
+
+  .gallery-subtitle {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.2;
+    max-width: 760px;
+  }
+
   .gallery-header {
     display: flex;
     flex-direction: column;
@@ -1915,6 +2030,10 @@ ul  { list-style: none; }
   /* Gallery header */
   .gallery-header h1 { font-size: 28px; }
   .home-gallery { padding-top: 48px; }
+  .home-gallery--secondary { padding-top: 40px; }
+  .winter-showcase { padding-top: 48px; }
+  .winter-showcase__header h1 { font-size: 32px; }
+  .gallery-subtitle { font-size: 24px; }
 }
 
 /* ===== MOBILE (max-width: 600px) ===== */
@@ -2010,6 +2129,18 @@ ul  { list-style: none; }
   .gallery-item img { height: 200px; }
   .gallery-header h1 { font-size: 24px; }
   .home-gallery { padding-top: 36px; }
+  .home-gallery--secondary { padding-top: 28px; }
+  .winter-showcase { padding-top: 36px; }
+  .winter-showcase__header h1 { font-size: 28px; }
+  .winter-carousel {
+    grid-auto-columns: minmax(232px, 84vw);
+    gap: 14px;
+  }
+  .winter-card__media img,
+  .winter-card__placeholder {
+    height: 210px;
+  }
+  .gallery-subtitle { font-size: 20px; }
 
   /* Joyería: 1 column */
   .joyeria-grid {

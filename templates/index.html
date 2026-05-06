@@ -5,13 +5,74 @@
 
 
 {% block content %}
-<section class="home-gallery">
+<section class="winter-showcase">
+  <div class="container">
+    <div class="winter-showcase__header">
+      <div>
+        <p class="eyebrow">Muestrario principal</p>
+        <h1>Temporada de invierno</h1>
+        <p>Desliza de izquierda a derecha y recorre todos los productos de temporada.</p>
+      </div>
+    </div>
+
+    <div class="winter-carousel" aria-label="Muestrario principal de temporada de invierno">
+      {% for product in winter_products %}
+      <article class="winter-card">
+        <div class="winter-card__media">
+          {% if product.portada %}
+          <img src="{{ product.portada.url }}" alt="{{ product.nombre }}">
+          {% else %}
+          <div class="winter-card__placeholder">Sin imagen</div>
+          {% endif %}
+        </div>
+        <div class="winter-card__body">
+          <h3>{{ product.nombre }}</h3>
+          <p class="winter-card__price">${{ product.precio }}</p>
+          {% if product.descripcion %}
+          <p class="winter-card__desc">{{ product.descripcion }}</p>
+          {% endif %}
+          <a href="/carrito/agregar/producto/{{ product.id }}/?next={{ request.get_full_path|urlencode }}" class="card-joya__button">
+            Agregar al carrito
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+
+      {% for joya in winter_joyas %}
+      <article class="winter-card">
+        <div class="winter-card__media">
+          {% if joya.imagen %}
+          <img src="{{ joya.imagen.url }}" alt="{{ joya.nombre }}">
+          {% else %}
+          <div class="winter-card__placeholder">Sin imagen</div>
+          {% endif %}
+        </div>
+        <div class="winter-card__body">
+          <h3>{{ joya.nombre }}</h3>
+          <p class="winter-card__price">${{ joya.precio }}</p>
+          {% if joya.descripcion %}
+          <p class="winter-card__desc">{{ joya.descripcion }}</p>
+          {% endif %}
+          <a href="/carrito/agregar/joya/{{ joya.id }}/?next={{ request.get_full_path|urlencode }}" class="card-joya__button">
+            Agregar al carrito
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% if not winter_products and not winter_joyas %}
+    <div class="joyeria-empty">No hay productos de temporada de invierno para mostrar.</div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="home-gallery home-gallery--secondary">
   <div class="container">
     <div class="gallery-header">
       <div>
-        <p class="eyebrow">Destacados</p>
-        <h1>Nuevos ingresos</h1>
-        <p>Descubre las últimas piezas de joyería y accesorios recién añadidos a la tienda.</p>
+        <p class="eyebrow">Descubri tu estilo</p>
+        <h2 class="gallery-subtitle">Lo mejor en joyas, collares, anillos y mucho mas para vos</h2>
       </div>
     </div>
 
