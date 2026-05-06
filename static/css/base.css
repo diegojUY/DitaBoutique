@@ -1122,11 +1122,20 @@ body {
 
   .winter-card {
     scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: var(--radius-md);
     background: var(--color-white);
     overflow: hidden;
     box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+
+  .winter-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
   }
 
   .winter-card__media img,
@@ -1145,7 +1154,9 @@ body {
   }
 
   .winter-card__body {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     gap: 10px;
     padding: 14px;
   }
@@ -1163,6 +1174,7 @@ body {
 
   .winter-card__desc {
     margin: 0;
+    flex: 1;
     color: var(--color-gray);
     line-height: 1.5;
     min-height: 42px;

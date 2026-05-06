@@ -186,4 +186,7 @@ if (grid && dataElement) {
 
   renderizarMuestrario();
   setInterval(renderizarMuestrario, 4200);
+
+  // Exponer para que otros carruseles de la misma página puedan reutilizar el modal
+  window._ditaOpenModal = openProductModal;
 }

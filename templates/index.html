@@ -17,7 +17,7 @@
 
     <div class="winter-carousel" aria-label="Muestrario principal de temporada de invierno">
       {% for product in winter_products %}
-      <article class="winter-card">
+      <article class="winter-card" data-winter-tipo="producto" data-winter-id="{{ product.id }}">
         <div class="winter-card__media">
           {% if product.portada %}
           <img src="{{ product.portada.url }}" alt="{{ product.nombre }}">
@@ -28,9 +28,7 @@
         <div class="winter-card__body">
           <h3>{{ product.nombre }}</h3>
           <p class="winter-card__price">${{ product.precio }}</p>
-          {% if product.descripcion %}
           <p class="winter-card__desc">{{ product.descripcion }}</p>
-          {% endif %}
           <a href="/carrito/agregar/producto/{{ product.id }}/?next={{ request.get_full_path|urlencode }}" class="card-joya__button">
             Agregar al carrito
           </a>
@@ -39,7 +37,7 @@
       {% endfor %}
 
       {% for joya in winter_joyas %}
-      <article class="winter-card">
+      <article class="winter-card" data-winter-tipo="joya" data-winter-id="{{ joya.id }}">
         <div class="winter-card__media">
           {% if joya.imagen %}
           <img src="{{ joya.imagen.url }}" alt="{{ joya.nombre }}">
@@ -50,9 +48,7 @@
         <div class="winter-card__body">
           <h3>{{ joya.nombre }}</h3>
           <p class="winter-card__price">${{ joya.precio }}</p>
-          {% if joya.descripcion %}
           <p class="winter-card__desc">{{ joya.descripcion }}</p>
-          {% endif %}
           <a href="/carrito/agregar/joya/{{ joya.id }}/?next={{ request.get_full_path|urlencode }}" class="card-joya__button">
             Agregar al carrito
           </a>
@@ -71,8 +67,8 @@
   <div class="container">
     <div class="gallery-header">
       <div>
-        <p class="eyebrow">Descubri tu estilo</p>
-        <h2 class="gallery-subtitle">Lo mejor en joyas, collares, anillos y mucho mas para vos</h2>
+        <p class="eyebrow">Descubrí tu estilo</p>
+        <h2 class="gallery-subtitle">Lo mejor en joyas, collares, anillos y mucho más para vos</h2>
       </div>
     </div>
 
@@ -118,5 +114,70 @@
 {% endfor %}
 ]
 </script>
+<script id="winter-data" type="application/json">
+[
+{% for product in winter_products %}
+  {
+    "id": "{{ product.id }}",
+    "nombre": "{{ product.nombre|escapejs }}",
+    "imagen": "{% if product.portada %}{{ product.portada.url|escapejs }}{% endif %}",
+    "precio": "{{ product.precio }}",
+    "descripcion": "{{ product.descripcion|default:''|escapejs }}",
+    "cantidad": "{{ product.cantidad }}",
+    "tipo": "producto",
+    "gallery_urls": [
+      {% if product.portada %}"{{ product.portada.url|escapejs }}"{% endif %}
+      {% for image in product.imagenes.all %}
+        {% if image.imagen %}{% if not forloop.first or product.portada %}, {% endif %}"{{ image.imagen.url|escapejs }}"{% endif %}
+      {% endfor %}
+    ],
+    "admin_url": "{% if request.user.is_staff %}{% url 'admin:tienda_producto_change' product.id %}{% endif %}"
+  }{% if not forloop.last or winter_joyas %},{% endif %}
+{% endfor %}
+{% for joya in winter_joyas %}
+  {
+    "id": "{{ joya.id }}",
+    "nombre": "{{ joya.nombre|escapejs }}",
+    "imagen": "{{ joya.imagen.url|escapejs }}",
+    "precio": "{{ joya.precio }}",
+    "descripcion": "{{ joya.descripcion|default:'Joyas exclusivas y cuidadosamente seleccionadas.'|escapejs }}",
+    "cantidad": "1",
+    "tipo": "joya",
+    "gallery_urls": [
+      "{{ joya.imagen.url|escapejs }}"
+      {% for image in joya.imagenes.all %},{% if image.imagen %}"{{ image.imagen.url|escapejs }}"{% endif %}{% endfor %}
+    ],
+    "admin_url": "{% if request.user.is_staff %}{% url 'admin:tienda_joya_change' joya.id %}{% endif %}"
+  }{% if not forloop.last %},{% endif %}
+{% endfor %}
+]
+</script>
 <script src="{% static 'js/muestrario.js' %}"></script>
+<script>
+(function () {
+  var winterEl = document.getElementById('winter-data');
+  if (!winterEl) return;
+  var winterProductos;
+  try {
+    winterProductos = JSON.parse(winterEl.textContent.trim() || '[]');
+  } catch (e) {
+    winterProductos = [];
+  }
+  if (!winterProductos.length) return;
+
+  document.querySelectorAll('.winter-card[data-winter-id]').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('.card-joya__button')) return;
+      var tipo = card.dataset.winterTipo;
+      var id = card.dataset.winterId;
+      var product = winterProductos.find(function (p) {
+        return p.tipo === tipo && String(p.id) === String(id);
+      });
+      if (product && typeof window._ditaOpenModal === 'function') {
+        window._ditaOpenModal(product);
+      }
+    });
+  });
+}());
+</script>
 {% endblock %}
